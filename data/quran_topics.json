@@ -1,0 +1,1293 @@
+{
+  "metadata": {
+    "riwayah": "hafs_an_asim",
+    "total_surahs": 114,
+    "total_ayahs": 6236,
+    "source": "فهرس مواضيع القرآن الكريم"
+  },
+  "topics": [
+    {
+      "title": "أركان الإسلام",
+      "level": "major_topic",
+      "page_number": 2,
+      "column": "right",
+      "references": []
+    },
+    {
+      "title": "أولاً: التوحيد",
+      "level": "section",
+      "page_number": 2,
+      "column": "right",
+      "references": []
+    },
+    {
+      "title": "(١)- توحيد الله تعالى",
+      "level": "topic",
+      "page_number": 2,
+      "column": "right",
+      "references": []
+    },
+    {
+      "title": "إرادته",
+      "level": "subtopic",
+      "page_number": 2,
+      "column": "right",
+      "references": [
+        {
+          "surah_number": 2,
+          "ayahs": [
+            117,
+            185,
+            253
+          ]
+        },
+        {
+          "surah_number": 4,
+          "ayahs": [
+            [
+              26,
+              28
+            ]
+          ]
+        },
+        {
+          "surah_number": 5,
+          "ayahs": [
+            6,
+            18,
+            52
+          ]
+        },
+        {
+          "surah_number": 6,
+          "ayahs": [
+            73,
+            125
+          ]
+        },
+        {
+          "surah_number": 8,
+          "ayahs": [
+            7,
+            67
+          ]
+        },
+        {
+          "surah_number": 9,
+          "ayahs": [
+            55,
+            85
+          ]
+        },
+        {
+          "surah_number": 10,
+          "ayahs": [
+            107
+          ]
+        },
+        {
+          "surah_number": 11,
+          "ayahs": [
+            34,
+            107
+          ]
+        },
+        {
+          "surah_number": 16,
+          "ayahs": [
+            40
+          ]
+        },
+        {
+          "surah_number": 17,
+          "ayahs": [
+            16
+          ]
+        },
+        {
+          "surah_number": 22,
+          "ayahs": [
+            14,
+            28
+          ]
+        },
+        {
+          "surah_number": 33,
+          "ayahs": [
+            17,
+            33
+          ]
+        },
+        {
+          "surah_number": 36,
+          "ayahs": [
+            82
+          ]
+        },
+        {
+          "surah_number": 48,
+          "ayahs": [
+            11
+          ]
+        },
+        {
+          "surah_number": 54,
+          "ayahs": [
+            50
+          ]
+        }
+      ]
+    },
+    {
+      "title": "أسماء الله الحسنى",
+      "level": "major_topic",
+      "page_number": 2,
+      "column": "right",
+      "references": [
+        {
+          "surah_number": 7,
+          "ayahs": [
+            180
+          ]
+        },
+        {
+          "surah_number": 17,
+          "ayahs": [
+            110
+          ]
+        },
+        {
+          "surah_number": 20,
+          "ayahs": [
+            8
+          ]
+        },
+        {
+          "surah_number": 59,
+          "ayahs": [
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "title": "إليه ترجع الأمور",
+      "level": "subtopic",
+      "page_number": 2,
+      "column": "right",
+      "references": [
+        {
+          "surah_number": 2,
+          "ayahs": [
+            28,
+            46,
+            156,
+            210,
+            245,
+            281
+          ]
+        },
+        {
+          "surah_number": 3,
+          "ayahs": [
+            55,
+            83,
+            109
+          ]
+        },
+        {
+          "surah_number": 5,
+          "ayahs": [
+            48,
+            105
+          ]
+        },
+        {
+          "surah_number": 6,
+          "ayahs": [
+            60,
+            108,
+            164
+          ]
+        },
+        {
+          "surah_number": 8,
+          "ayahs": [
+            4,
+            10,
+            23,
+            44,
+            46,
+            56
+          ]
+        },
+        {
+          "surah_number": 11,
+          "ayahs": [
+            4,
+            34,
+            123
+          ]
+        },
+        {
+          "surah_number": 19,
+          "ayahs": [
+            40
+          ]
+        },
+        {
+          "surah_number": 21,
+          "ayahs": [
+            93
+          ]
+        },
+        {
+          "surah_number": 22,
+          "ayahs": [
+            41,
+            76
+          ]
+        },
+        {
+          "surah_number": 23,
+          "ayahs": [
+            60
+          ]
+        },
+        {
+          "surah_number": 24,
+          "ayahs": [
+            64
+          ]
+        },
+        {
+          "surah_number": 28,
+          "ayahs": [
+            70,
+            88
+          ]
+        },
+        {
+          "surah_number": 29,
+          "ayahs": [
+            8,
+            17,
+            57
+          ]
+        },
+        {
+          "surah_number": 30,
+          "ayahs": [
+            11
+          ]
+        },
+        {
+          "surah_number": 31,
+          "ayahs": [
+            10,
+            23
+          ]
+        },
+        {
+          "surah_number": 32,
+          "ayahs": [
+            4,
+            5,
+            11
+          ]
+        },
+        {
+          "surah_number": 35,
+          "ayahs": [
+            4
+          ]
+        },
+        {
+          "surah_number": 36,
+          "ayahs": [
+            83
+          ]
+        },
+        {
+          "surah_number": 39,
+          "ayahs": [
+            7,
+            44
+          ]
+        },
+        {
+          "surah_number": 41,
+          "ayahs": [
+            21
+          ]
+        },
+        {
+          "surah_number": 43,
+          "ayahs": [
+            85
+          ]
+        },
+        {
+          "surah_number": 45,
+          "ayahs": [
+            15
+          ]
+        },
+        {
+          "surah_number": 53,
+          "ayahs": [
+            42
+          ]
+        },
+        {
+          "surah_number": 57,
+          "ayahs": [
+            5
+          ]
+        },
+        {
+          "surah_number": 85,
+          "ayahs": [
+            13
+          ]
+        },
+        {
+          "surah_number": 96,
+          "ayahs": [
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "title": "إنذار من لا يعترف بتوحيد الله تعالى بالإنتقام",
+      "level": "topic",
+      "page_number": 2,
+      "column": "right",
+      "references": [
+        {
+          "surah_number": 2,
+          "ayahs": [
+            114
+          ]
+        },
+        {
+          "surah_number": 3,
+          "ayahs": [
+            25
+          ]
+        },
+        {
+          "surah_number": 4,
+          "ayahs": [
+            14
+          ]
+        },
+        {
+          "surah_number": 5,
+          "ayahs": [
+            5,
+            41,
+            52,
+            54,
+            62,
+            63,
+            114,
+            115,
+            119
+          ]
+        },
+        {
+          "surah_number": 6,
+          "ayahs": [
+            20,
+            30
+          ]
+        },
+        {
+          "surah_number": 7,
+          "ayahs": [
+            65,
+            [
+              97,
+              99
+            ]
+          ]
+        },
+        {
+          "surah_number": 8,
+          "ayahs": [
+            [
+              50,
+              54
+            ]
+          ]
+        },
+        {
+          "surah_number": 9,
+          "ayahs": [
+            24,
+            52,
+            55
+          ]
+        },
+        {
+          "surah_number": 10,
+          "ayahs": [
+            54
+          ]
+        },
+        {
+          "surah_number": 11,
+          "ayahs": [
+            121,
+            122
+          ]
+        },
+        {
+          "surah_number": 12,
+          "ayahs": [
+            107
+          ]
+        },
+        {
+          "surah_number": 14,
+          "ayahs": [
+            44
+          ]
+        },
+        {
+          "surah_number": 15,
+          "ayahs": [
+            [
+              90,
+              93
+            ]
+          ]
+        },
+        {
+          "surah_number": 16,
+          "ayahs": [
+            [
+              45,
+              47
+            ],
+            106
+          ]
+        },
+        {
+          "surah_number": 17,
+          "ayahs": [
+            41,
+            68,
+            69,
+            72
+          ]
+        },
+        {
+          "surah_number": 19,
+          "ayahs": [
+            39
+          ]
+        },
+        {
+          "surah_number": 21,
+          "ayahs": [
+            29
+          ]
+        },
+        {
+          "surah_number": 23,
+          "ayahs": [
+            95,
+            100
+          ]
+        },
+        {
+          "surah_number": 25,
+          "ayahs": [
+            23
+          ]
+        },
+        {
+          "surah_number": 27,
+          "ayahs": [
+            90
+          ]
+        },
+        {
+          "surah_number": 28,
+          "ayahs": [
+            50
+          ]
+        },
+        {
+          "surah_number": 34,
+          "ayahs": [
+            9,
+            [
+              42,
+              49
+            ]
+          ]
+        },
+        {
+          "surah_number": 37,
+          "ayahs": [
+            177
+          ]
+        },
+        {
+          "surah_number": 38,
+          "ayahs": [
+            51
+          ]
+        },
+        {
+          "surah_number": 39,
+          "ayahs": [
+            47,
+            48
+          ]
+        },
+        {
+          "surah_number": 42,
+          "ayahs": [
+            44
+          ]
+        },
+        {
+          "surah_number": 43,
+          "ayahs": [
+            41,
+            42
+          ]
+        },
+        {
+          "surah_number": 44,
+          "ayahs": [
+            10,
+            14,
+            109
+          ]
+        },
+        {
+          "surah_number": 46,
+          "ayahs": [
+            [
+              22,
+              23
+            ],
+            32,
+            34
+          ]
+        },
+        {
+          "surah_number": 50,
+          "ayahs": [
+            50,
+            54
+          ]
+        },
+        {
+          "surah_number": 52,
+          "ayahs": [
+            50
+          ]
+        },
+        {
+          "surah_number": 53,
+          "ayahs": [
+            [
+              56,
+              58
+            ]
+          ]
+        },
+        {
+          "surah_number": 54,
+          "ayahs": [
+            41,
+            54
+          ]
+        }
+      ]
+    },
+    {
+      "title": "بدون عنوان",
+      "level": "subtopic",
+      "page_number": 2,
+      "column": "right",
+      "references": [
+        {
+          "surah_number": 32,
+          "ayahs": [
+            9
+          ]
+        },
+        {
+          "surah_number": 34,
+          "ayahs": [
+            9
+          ]
+        },
+        {
+          "surah_number": 52,
+          "ayahs": [
+            25
+          ]
+        },
+        {
+          "surah_number": 53,
+          "ayahs": [
+            67,
+            [
+              5,
+              8
+            ]
+          ]
+        },
+        {
+          "surah_number": 54,
+          "ayahs": [
+            35
+          ]
+        },
+        {
+          "surah_number": 59,
+          "ayahs": [
+            4
+          ]
+        },
+        {
+          "surah_number": 67,
+          "ayahs": [
+            [
+              16,
+              17
+            ]
+          ]
+        },
+        {
+          "surah_number": 70,
+          "ayahs": [
+            42
+          ]
+        },
+        {
+          "surah_number": 73,
+          "ayahs": [
+            18
+          ]
+        },
+        {
+          "surah_number": 86,
+          "ayahs": [
+            [
+              16,
+              18
+            ]
+          ]
+        },
+        {
+          "surah_number": 92,
+          "ayahs": [
+            17,
+            11,
+            14
+          ]
+        }
+      ]
+    },
+    {
+      "title": "إنفراده تعالى بالأمر والحكم",
+      "level": "topic",
+      "page_number": 2,
+      "column": "left",
+      "references": [
+        {
+          "surah_number": 2,
+          "ayahs": [
+            113,
+            210
+          ]
+        },
+        {
+          "surah_number": 3,
+          "ayahs": [
+            109,
+            128,
+            154,
+            57,
+            62,
+            84
+          ]
+        },
+        {
+          "surah_number": 11,
+          "ayahs": [
+            123
+          ]
+        },
+        {
+          "surah_number": 13,
+          "ayahs": [
+            33
+          ]
+        },
+        {
+          "surah_number": 16,
+          "ayahs": [
+            92,
+            124
+          ]
+        },
+        {
+          "surah_number": 19,
+          "ayahs": [
+            64
+          ]
+        },
+        {
+          "surah_number": 21,
+          "ayahs": [
+            23
+          ]
+        },
+        {
+          "surah_number": 22,
+          "ayahs": [
+            17,
+            69,
+            76
+          ]
+        },
+        {
+          "surah_number": 27,
+          "ayahs": [
+            78
+          ]
+        },
+        {
+          "surah_number": 28,
+          "ayahs": [
+            68,
+            70,
+            88
+          ]
+        },
+        {
+          "surah_number": 30,
+          "ayahs": [
+            4
+          ]
+        },
+        {
+          "surah_number": 32,
+          "ayahs": [
+            25
+          ]
+        },
+        {
+          "surah_number": 34,
+          "ayahs": [
+            26
+          ]
+        },
+        {
+          "surah_number": 35,
+          "ayahs": [
+            44
+          ]
+        },
+        {
+          "surah_number": 38,
+          "ayahs": [
+            46,
+            42,
+            10,
+            82,
+            19
+          ]
+        }
+      ]
+    },
+    {
+      "title": "عقائد البشر وأهواؤهم",
+      "level": "topic",
+      "page_number": 2,
+      "column": "left",
+      "references": [
+        {
+          "surah_number": 2,
+          "ayahs": [
+            [
+              9,
+              13
+            ],
+            165,
+            [
+              200,
+              207
+            ],
+            6,
+            [
+              25,
+              30
+            ]
+          ]
+        },
+        {
+          "surah_number": 9,
+          "ayahs": [
+            [
+              49,
+              50
+            ],
+            [
+              61,
+              85
+            ],
+            [
+              75,
+              77
+            ],
+            [
+              89,
+              102
+            ],
+            6,
+            106,
+            [
+              124,
+              127
+            ],
+            10,
+            [
+              40,
+              43
+            ]
+          ]
+        },
+        {
+          "surah_number": 21,
+          "ayahs": [
+            [
+              3,
+              4
+            ],
+            8,
+            10,
+            [
+              11,
+              13
+            ]
+          ]
+        },
+        {
+          "surah_number": 29,
+          "ayahs": [
+            10,
+            11,
+            16
+          ]
+        },
+        {
+          "surah_number": 31,
+          "ayahs": [
+            [
+              6,
+              9
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "أوّله",
+      "level": "topic",
+      "page_number": 2,
+      "column": "left",
+      "references": [
+        {
+          "surah_number": 2,
+          "ayahs": [
+            83,
+            113,
+            121
+          ]
+        },
+        {
+          "surah_number": 3,
+          "ayahs": [
+            109,
+            128,
+            8,
+            33,
+            7,
+            [
+              151,
+              153
+            ],
+            62,
+            57
+          ]
+        },
+        {
+          "surah_number": 6,
+          "ayahs": [
+            154,
+            92
+          ]
+        },
+        {
+          "surah_number": 16,
+          "ayahs": [
+            31,
+            13,
+            67,
+            12,
+            123,
+            11,
+            44,
+            69,
+            30,
+            17,
+            22,
+            22,
+            21,
+            64,
+            19,
+            124,
+            88,
+            70,
+            68,
+            28,
+            78,
+            27,
+            96,
+            23,
+            78,
+            77,
+            41,
+            46,
+            39,
+            36,
+            34,
+            25,
+            32,
+            14,
+            31,
+            4,
+            30,
+            58,
+            [
+              9,
+              12
+            ],
+            49,
+            [
+              38,
+              43
+            ],
+            10,
+            42,
+            34,
+            19,
+            82,
+            [
+              3,
+              7
+            ],
+            74,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "title": "تقريع من لا يقر بوحدانيته تعالى",
+      "level": "topic",
+      "page_number": 2,
+      "column": "left",
+      "references": [
+        {
+          "surah_number": 27,
+          "ayahs": [
+            27,
+            24,
+            34,
+            72,
+            71
+          ]
+        },
+        {
+          "surah_number": 28,
+          "ayahs": [
+            [
+              59,
+              64
+            ],
+            27
+          ]
+        }
+      ]
+    },
+    {
+      "title": "تنزيه الله تعالى عن الظلم",
+      "level": "topic",
+      "page_number": 2,
+      "column": "left",
+      "references": [
+        {
+          "surah_number": 2,
+          "ayahs": [
+            281,
+            272,
+            4,
+            286
+          ]
+        },
+        {
+          "surah_number": 3,
+          "ayahs": [
+            25,
+            108,
+            117,
+            116,
+            182
+          ]
+        },
+        {
+          "surah_number": 4,
+          "ayahs": [
+            40,
+            49,
+            124
+          ]
+        },
+        {
+          "surah_number": 6,
+          "ayahs": [
+            131,
+            52,
+            160
+          ]
+        },
+        {
+          "surah_number": 8,
+          "ayahs": [
+            60
+          ]
+        },
+        {
+          "surah_number": 9,
+          "ayahs": [
+            70
+          ]
+        },
+        {
+          "surah_number": 10,
+          "ayahs": [
+            44,
+            47,
+            54
+          ]
+        },
+        {
+          "surah_number": 11,
+          "ayahs": [
+            101,
+            117
+          ]
+        },
+        {
+          "surah_number": 16,
+          "ayahs": [
+            33,
+            111,
+            118
+          ]
+        },
+        {
+          "surah_number": 17,
+          "ayahs": [
+            71
+          ]
+        },
+        {
+          "surah_number": 18,
+          "ayahs": [
+            49
+          ]
+        },
+        {
+          "surah_number": 19,
+          "ayahs": [
+            60
+          ]
+        },
+        {
+          "surah_number": 20,
+          "ayahs": [
+            112
+          ]
+        },
+        {
+          "surah_number": 21,
+          "ayahs": [
+            47
+          ]
+        },
+        {
+          "surah_number": 22,
+          "ayahs": [
+            10
+          ]
+        },
+        {
+          "surah_number": 23,
+          "ayahs": [
+            62
+          ]
+        },
+        {
+          "surah_number": 26,
+          "ayahs": [
+            209
+          ]
+        },
+        {
+          "surah_number": 28,
+          "ayahs": [
+            59
+          ]
+        },
+        {
+          "surah_number": 29,
+          "ayahs": [
+            40
+          ]
+        },
+        {
+          "surah_number": 30,
+          "ayahs": [
+            9
+          ]
+        },
+        {
+          "surah_number": 36,
+          "ayahs": [
+            54
+          ]
+        },
+        {
+          "surah_number": 40,
+          "ayahs": [
+            17
+          ]
+        },
+        {
+          "surah_number": 41,
+          "ayahs": [
+            46
+          ]
+        },
+        {
+          "surah_number": 43,
+          "ayahs": [
+            76
+          ]
+        },
+        {
+          "surah_number": 45,
+          "ayahs": [
+            22
+          ]
+        },
+        {
+          "surah_number": 46,
+          "ayahs": [
+            19
+          ]
+        },
+        {
+          "surah_number": 50,
+          "ayahs": [
+            29
+          ]
+        },
+        {
+          "surah_number": 65,
+          "ayahs": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "title": "التوحيد المطلق لله تعالى",
+      "level": "topic",
+      "page_number": 2,
+      "column": "left",
+      "references": []
+    },
+    {
+      "title": "التوحيد المطلق لله تعالى",
+      "level": "topic",
+      "page_number": 2,
+      "column": "left",
+      "references": [
+        {
+          "surah_number": 2,
+          "ayahs": [
+            2,
+            3,
+            6,
+            18,
+            56,
+            161,
+            163,
+            164,
+            165,
+            200,
+            266
+          ]
+        },
+        {
+          "surah_number": 10,
+          "ayahs": [
+            5,
+            32,
+            100,
+            104
+          ]
+        },
+        {
+          "surah_number": 16,
+          "ayahs": [
+            50
+          ]
+        },
+        {
+          "surah_number": 20,
+          "ayahs": [
+            28
+          ]
+        },
+        {
+          "surah_number": 27,
+          "ayahs": [
+            26
+          ]
+        },
+        {
+          "surah_number": 30,
+          "ayahs": [
+            30
+          ]
+        }
+      ]
+    }
+  ]
+}
