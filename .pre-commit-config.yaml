@@ -1,0 +1,6 @@
+repos:
+  - repo: https://github.com/marqoom-specs/quranic-terminology-lint
+    rev: v0.5.0
+    hooks:
+      - id: quranic-data
+      - id: quranic-terminology

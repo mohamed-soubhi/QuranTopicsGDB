@@ -1,0 +1,17 @@
+# Virtual environment
+.venv/
+__pycache__/
+*.pyc
+
+# Temporary & intermediate processing files
+*.tmp
+*.jpg
+*.png
+temp_*/
+data/columns/
+data/cache/
+
+# Archives & raw dumps
+*.tgz
+*.tar.gz
+*.sql
