@@ -637,28 +637,31 @@ def build_book_json_and_html():
     const popoverBody = document.getElementById('popoverBody');
 
     let quranCache = null;
-    let isFetchingQuran = false;
+    let quranPromise = null;
     let hoverTimeout = null;
     let activeRef = null;
 
     const surahNamesAr = {json.dumps({k: v["name"] for k, v in SURAHS.items()}, ensure_ascii=False)};
     const surahMaxAyahs = {json.dumps({k: v["total_ayahs"] for k, v in SURAHS.items()})};
 
-    async function loadQuranText() {{
-      if (quranCache) return quranCache;
-      if (isFetchingQuran) return null;
-      isFetchingQuran = true;
-      try {{
-        const resp = await fetch('data/quran_text_hafs.json');
-        const data = await resp.json();
-        quranCache = data.ayahs || {{}};
-        isFetchingQuran = false;
-        return quranCache;
-      }} catch (err) {{
-        console.warn('Could not load data/quran_text_hafs.json directly.', err);
-        isFetchingQuran = false;
-        return null;
-      }}
+    function loadQuranText() {{
+      if (quranCache) return Promise.resolve(quranCache);
+      if (quranPromise) return quranPromise;
+      quranPromise = fetch('data/quran_text_hafs.json')
+        .then(resp => {{
+          if (!resp.ok) throw new Error('Network error: ' + resp.status);
+          return resp.json();
+        }})
+        .then(data => {{
+          quranCache = data.ayahs || {{}};
+          return quranCache;
+        }})
+        .catch(err => {{
+          console.warn('Could not load data/quran_text_hafs.json directly.', err);
+          quranPromise = null;
+          return null;
+        }});
+      return quranPromise;
     }}
 
     // Trigger pre-load after page load
@@ -852,28 +855,31 @@ def build_book_json_and_html():
     const popoverBody = document.getElementById('popoverBody');
 
     let quranCache = null;
-    let isFetchingQuran = false;
+    let quranPromise = null;
     let hoverTimeout = null;
     let activeRef = null;
 
     const surahNamesEn = {json.dumps(SURAH_NAMES_STANDARDIZED)};
     const surahMaxAyahs = {json.dumps({k: v["total_ayahs"] for k, v in SURAHS.items()})};
 
-    async function loadQuranText() {{
-      if (quranCache) return quranCache;
-      if (isFetchingQuran) return null;
-      isFetchingQuran = true;
-      try {{
-        const resp = await fetch('data/quran_text_hafs.json');
-        const data = await resp.json();
-        quranCache = data.ayahs || {{}};
-        isFetchingQuran = false;
-        return quranCache;
-      }} catch (err) {{
-        console.warn('Could not load data/quran_text_hafs.json directly.', err);
-        isFetchingQuran = false;
-        return null;
-      }}
+    function loadQuranText() {{
+      if (quranCache) return Promise.resolve(quranCache);
+      if (quranPromise) return quranPromise;
+      quranPromise = fetch('data/quran_text_hafs.json')
+        .then(resp => {{
+          if (!resp.ok) throw new Error('Network error: ' + resp.status);
+          return resp.json();
+        }})
+        .then(data => {{
+          quranCache = data.ayahs || {{}};
+          return quranCache;
+        }})
+        .catch(err => {{
+          console.warn('Could not load data/quran_text_hafs.json directly.', err);
+          quranPromise = null;
+          return null;
+        }});
+      return quranPromise;
     }}
 
     window.addEventListener('load', () => {{

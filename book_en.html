@@ -2095,28 +2095,31 @@
     const popoverBody = document.getElementById('popoverBody');
 
     let quranCache = null;
-    let isFetchingQuran = false;
+    let quranPromise = null;
     let hoverTimeout = null;
     let activeRef = null;
 
     const surahNamesEn = {"1": "Fatihah", "2": "Baqarah", "3": "Ali Imran", "4": "Nisa", "5": "Maidah", "6": "Anam", "7": "Araf", "8": "Anfal", "9": "Tawbah", "10": "Yunus", "11": "Hud", "12": "Yusuf", "13": "Rad", "14": "Ibrahim", "15": "Hijr", "16": "Nahl", "17": "Isra", "18": "Kahf", "19": "Maryam", "20": "Taha", "21": "Anbiya", "22": "Hajj", "23": "Muminun", "24": "Nur", "25": "Furqan", "26": "Shuara", "27": "Naml", "28": "Qasas", "29": "Ankabut", "30": "Rum", "31": "Luqman", "32": "Sajdah", "33": "Ahzab", "34": "Saba", "35": "Fatir", "36": "Yasin", "37": "Saffat", "38": "Sad", "39": "Zumar", "40": "Ghafir", "41": "Fussilat", "42": "Shura", "43": "Zukhruf", "44": "Dukhan", "45": "Jathiyah", "46": "Ahqaf", "47": "Muhammad", "48": "Fath", "49": "Hujurat", "50": "Qaf", "51": "Dhariyat", "52": "Tur", "53": "Najm", "54": "Qamar", "55": "Rahman", "56": "Waqiah", "57": "Hadid", "58": "Mujadilah", "59": "Hashr", "60": "Mumtahanah", "61": "Saff", "62": "Jumuah", "63": "Munafiqun", "64": "Taghabun", "65": "Talaq", "66": "Tahrim", "67": "Mulk", "68": "Qalam", "69": "Haqqah", "70": "Maarij", "71": "Nuh", "72": "Jinn", "73": "Muzzammil", "74": "Muddaththir", "75": "Qiyamah", "76": "Insan", "77": "Mursalat", "78": "Naba", "79": "Naziat", "80": "Abasa", "81": "Takwir", "82": "Infitar", "83": "Mutaffifin", "84": "Inshiqaq", "85": "Buruj", "86": "Tariq", "87": "Ala", "88": "Ghashiyah", "89": "Fajr", "90": "Balad", "91": "Shams", "92": "Layl", "93": "Duha", "94": "Sharh", "95": "Tin", "96": "Alaq", "97": "Qadr", "98": "Bayyinah", "99": "Zalzalah", "100": "Adiyat", "101": "Qariah", "102": "Takathur", "103": "Asr", "104": "Humazah", "105": "Fil", "106": "Quraysh", "107": "Maun", "108": "Kawthar", "109": "Kafirun", "110": "Nasr", "111": "Masad", "112": "Ikhlas", "113": "Falaq", "114": "Nas"};
     const surahMaxAyahs = {"1": 7, "2": 286, "3": 200, "4": 176, "5": 120, "6": 165, "7": 206, "8": 75, "9": 129, "10": 109, "11": 123, "12": 111, "13": 43, "14": 52, "15": 99, "16": 128, "17": 111, "18": 110, "19": 98, "20": 135, "21": 112, "22": 78, "23": 118, "24": 64, "25": 77, "26": 227, "27": 93, "28": 88, "29": 69, "30": 60, "31": 34, "32": 30, "33": 73, "34": 54, "35": 45, "36": 83, "37": 182, "38": 88, "39": 75, "40": 85, "41": 54, "42": 53, "43": 89, "44": 59, "45": 37, "46": 35, "47": 38, "48": 29, "49": 18, "50": 45, "51": 60, "52": 49, "53": 62, "54": 55, "55": 78, "56": 96, "57": 29, "58": 22, "59": 24, "60": 13, "61": 14, "62": 11, "63": 11, "64": 18, "65": 12, "66": 12, "67": 30, "68": 52, "69": 52, "70": 44, "71": 28, "72": 28, "73": 20, "74": 56, "75": 40, "76": 31, "77": 50, "78": 40, "79": 46, "80": 42, "81": 29, "82": 19, "83": 36, "84": 25, "85": 22, "86": 17, "87": 19, "88": 26, "89": 30, "90": 20, "91": 15, "92": 21, "93": 11, "94": 8, "95": 8, "96": 19, "97": 5, "98": 8, "99": 8, "100": 11, "101": 11, "102": 8, "103": 3, "104": 9, "105": 5, "106": 4, "107": 7, "108": 3, "109": 6, "110": 3, "111": 5, "112": 4, "113": 5, "114": 6};
 
-    async function loadQuranText() {
-      if (quranCache) return quranCache;
-      if (isFetchingQuran) return null;
-      isFetchingQuran = true;
-      try {
-        const resp = await fetch('data/quran_text_hafs.json');
-        const data = await resp.json();
-        quranCache = data.ayahs || {};
-        isFetchingQuran = false;
-        return quranCache;
-      } catch (err) {
-        console.warn('Could not load data/quran_text_hafs.json directly.', err);
-        isFetchingQuran = false;
-        return null;
-      }
+    function loadQuranText() {
+      if (quranCache) return Promise.resolve(quranCache);
+      if (quranPromise) return quranPromise;
+      quranPromise = fetch('data/quran_text_hafs.json')
+        .then(resp => {
+          if (!resp.ok) throw new Error('Network error: ' + resp.status);
+          return resp.json();
+        })
+        .then(data => {
+          quranCache = data.ayahs || {};
+          return quranCache;
+        })
+        .catch(err => {
+          console.warn('Could not load data/quran_text_hafs.json directly.', err);
+          quranPromise = null;
+          return null;
+        });
+      return quranPromise;
     }
 
     window.addEventListener('load', () => {
