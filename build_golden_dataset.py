@@ -30,7 +30,7 @@ def build_golden():
             col = block.get("column", "right")
             level = level_map.get(b_type, "subtopic")
 
-            title = block.get("heading") or block.get("text") or ""
+            title = (block.get("heading") or block.get("text") or "").replace("\\n", " ").replace("\n", " ")
             # Strip trailing colons, newlines, and extraneous whitespace
             clean_title = " ".join(title.split()).strip().rstrip(":").rstrip("：").strip()
 

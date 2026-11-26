@@ -22,6 +22,10 @@ class TopicItem:
     page_number: Optional[int] = None
     column: Optional[str] = None  # "right", "left"
 
+    def __post_init__(self):
+        if self.title:
+            self.title = " ".join(self.title.replace("\\n", " ").replace("\n", " ").split()).strip()
+
 
 @dataclass
 class ValidationReport:
