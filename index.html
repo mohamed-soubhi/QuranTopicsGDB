@@ -668,6 +668,21 @@
         const response = await fetch('data/quran_topics.json');
         const data = await response.json();
         allTopics = data.topics || [];
+
+        // Build hierarchical context (parent section and major topic)
+        let currentMajor = '';
+        let currentSection = '';
+        allTopics.forEach(t => {
+          if (t.level === 'major_topic') {
+            currentMajor = t.title;
+            currentSection = '';
+          } else if (t.level === 'section') {
+            currentSection = t.title;
+          }
+          t.parentSection = currentSection;
+          t.parentMajor = currentMajor;
+        });
+
         renderTopics(allTopics);
       } catch (err) {
         console.warn('Could not load data/quran_topics.json directly. Showing fallback instructions.', err);
@@ -680,7 +695,7 @@
       }
     }
 
-    function renderTopics(topics) {
+    function renderTopics(topics, surahMatchLabel = null) {
       const container = document.getElementById('topicsContainer');
       const countEl = document.getElementById('resultsCount');
 
@@ -718,15 +733,17 @@
         }).join('');
 
         const colText = item.column === 'right' ? 'العمود الأيمن' : 'العمود الأيسر';
+        const parentInfo = item.parentSection && item.level === 'subtopic' ? ` &bull; تابع لقسم: <strong>${item.parentSection}</strong>` : '';
+        const matchBadge = item._matchReason ? `<span style="display:inline-block; margin-right:8px; font-size:0.75rem; color:#b45309; background:#fef3c7; border:1px solid #fcd34d; padding:1px 6px; border-radius:4px;">${item._matchReason}</span>` : '';
 
         return `
           <div class="topic-card">
             <div class="topic-header">
-              <div class="topic-title">${item.title}</div>
+              <div class="topic-title">${item.title} ${matchBadge}</div>
               <span class="topic-level-badge ${levelClass}">${levelTranslations[item.level] || item.level}</span>
             </div>
             ${refsHtml ? `<div class="references-container">${refsHtml}</div>` : ''}
-            <span class="page-tag">الصفحة: ${item.page_number} &bull; ${colText}</span>
+            <span class="page-tag">الصفحة: ${item.page_number} &bull; ${colText}${parentInfo}</span>
           </div>
         `;
       }).join('');
@@ -748,31 +765,72 @@
       const rawQuery = document.getElementById('topicSearch').value.trim();
       const normQuery = normalizeArabic(rawQuery);
 
-      let filtered = allTopics.filter(t => {
-        // Level filter
-        if (currentFilter !== 'all' && t.level !== currentFilter) {
-          return false;
-        }
+      if (!normQuery) {
+        let filtered = allTopics.filter(t => currentFilter === 'all' || t.level === currentFilter);
+        filtered.forEach(t => delete t._matchReason);
+        renderTopics(filtered);
+        return;
+      }
 
-        // Query filter
-        if (!normQuery) return true;
+      // Detect if user is specifically searching by Surah name or number
+      const isSurahExplicit = normQuery.startsWith('سوره ') || normQuery.startsWith('سورة ') || /^\d+$/.test(rawQuery);
+      const cleanSurahQuery = normQuery.replace(/^سورة\s*|^سوره\s*/, '').trim();
 
-        // Check title
-        if (normalizeArabic(t.title).includes(normQuery)) return true;
+      const rank1 = []; // Direct match in Topic Title
+      const rank2 = []; // Match in Parent Section or Major Topic
+      const rank3 = []; // Match in cited Surah name / number
 
-        // Check surah number or name
-        if (t.references) {
-          return t.references.some(r => {
-            if (r.surah_number.toString() === rawQuery) return true;
-            const name = surahNames[r.surah_number] || '';
-            if (normalizeArabic(name).includes(normQuery)) return true;
+      allTopics.forEach(t => {
+        delete t._matchReason;
+        if (currentFilter !== 'all' && t.level !== currentFilter) return;
+
+        const titleNorm = normalizeArabic(t.title);
+        const secNorm = normalizeArabic(t.parentSection || '');
+        const majorNorm = normalizeArabic(t.parentMajor || '');
+
+        if (titleNorm.includes(normQuery)) {
+          rank1.push(t);
+        } else if (secNorm.includes(normQuery) || majorNorm.includes(normQuery)) {
+          rank2.push(t);
+        } else if (t.references) {
+          let matchedSurahName = '';
+          const matchSurah = t.references.some(r => {
+            if (r.surah_number.toString() === rawQuery || r.surah_number.toString() === cleanSurahQuery) {
+              matchedSurahName = surahNames[r.surah_number] || '';
+              return true;
+            }
+            const sNameNorm = normalizeArabic(surahNames[r.surah_number] || '');
+            if (isSurahExplicit && sNameNorm.includes(cleanSurahQuery)) {
+              matchedSurahName = surahNames[r.surah_number] || '';
+              return true;
+            }
+            if (!isSurahExplicit && sNameNorm === normQuery) {
+              matchedSurahName = surahNames[r.surah_number] || '';
+              return true;
+            }
             return false;
           });
+          if (matchSurah) {
+            t._matchReason = `📖 ورد استشهاد من سورة ${matchedSurahName}`;
+            rank3.push(t);
+          }
         }
-        return false;
       });
 
-      renderTopics(filtered);
+      let results;
+      if (isSurahExplicit) {
+        results = rank3.concat(rank1, rank2);
+      } else {
+        // Direct title and section hierarchy matches first!
+        results = rank1.concat(rank2);
+        // Only append surah matches if there are no direct thematic matches
+        if (results.length === 0) {
+          results = rank3;
+        }
+      }
+
+      renderTopics(results);
+    }
     }
 
     document.getElementById('topicSearch').addEventListener('input', applyFilters);

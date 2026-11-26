@@ -652,6 +652,28 @@
 
     const surahNamesEn = {"1": "Fatihah", "2": "Baqarah", "3": "Ali Imran", "4": "Nisa", "5": "Maidah", "6": "Anam", "7": "Araf", "8": "Anfal", "9": "Tawbah", "10": "Yunus", "11": "Hud", "12": "Yusuf", "13": "Rad", "14": "Ibrahim", "15": "Hijr", "16": "Nahl", "17": "Isra", "18": "Kahf", "19": "Maryam", "20": "Taha", "21": "Anbiya", "22": "Hajj", "23": "Muminun", "24": "Nur", "25": "Furqan", "26": "Shuara", "27": "Naml", "28": "Qasas", "29": "Ankabut", "30": "Rum", "31": "Luqman", "32": "Sajdah", "33": "Ahzab", "34": "Saba", "35": "Fatir", "36": "Yasin", "37": "Saffat", "38": "Sad", "39": "Zumar", "40": "Ghafir", "41": "Fussilat", "42": "Shura", "43": "Zukhruf", "44": "Dukhan", "45": "Jathiyah", "46": "Ahqaf", "47": "Muhammad", "48": "Fath", "49": "Hujurat", "50": "Qaf", "51": "Dhariyat", "52": "Tur", "53": "Najm", "54": "Qamar", "55": "Rahman", "56": "Waqiah", "57": "Hadid", "58": "Mujadilah", "59": "Hashr", "60": "Mumtahanah", "61": "Saff", "62": "Jumuah", "63": "Munafiqun", "64": "Taghabun", "65": "Talaq", "66": "Tahrim", "67": "Mulk", "68": "Qalam", "69": "Haqqah", "70": "Maarij", "71": "Nuh", "72": "Jinn", "73": "Muzzammil", "74": "Muddaththir", "75": "Qiyamah", "76": "Insan", "77": "Mursalat", "78": "Naba", "79": "Naziat", "80": "Abasa", "81": "Takwir", "82": "Infitar", "83": "Mutaffifin", "84": "Inshiqaq", "85": "Buruj", "86": "Tariq", "87": "Ala", "88": "Ghashiyah", "89": "Fajr", "90": "Balad", "91": "Shams", "92": "Layl", "93": "Duha", "94": "Sharh", "95": "Tin", "96": "Alaq", "97": "Qadr", "98": "Bayyinah", "99": "Zalzalah", "100": "Adiyat", "101": "Qariah", "102": "Takathur", "103": "Asr", "104": "Humazah", "105": "Fil", "106": "Quraysh", "107": "Maun", "108": "Kawthar", "109": "Kafirun", "110": "Nasr", "111": "Masad", "112": "Ikhlas", "113": "Falaq", "114": "Nas"};
 
+    const surahNamesAr = {
+      1: "الفاتحة", 2: "البقرة", 3: "آل عمران", 4: "النساء", 5: "المائدة", 6: "الأنعام",
+      7: "الأعراف", 8: "الأنفال", 9: "التوبة", 10: "يونس", 11: "هود", 12: "يوسف",
+      13: "الرعد", 14: "إبراهيم", 15: "الحجر", 16: "النحل", 17: "الإسراء", 18: "الكهف",
+      19: "مريم", 20: "طه", 21: "الأنبياء", 22: "الحج", 23: "المؤمنون", 24: "النور",
+      25: "الفرقان", 26: "الشعراء", 27: "النمل", 28: "القصص", 29: "العنكبوت", 30: "الروم",
+      31: "لقمان", 32: "السجدة", 33: "الأحزاب", 34: "سبأ", 35: "فاطر", 36: "يس",
+      37: "الصافات", 38: "ص", 39: "الزمر", 40: "غافر", 41: "فصلت", 42: "الشورى",
+      43: "الزخرف", 44: "الدخان", 45: "الجاثية", 46: "الأحقاف", 47: "محمد", 48: "الفتح",
+      49: "الحجرات", 50: "ق", 51: "الذاريات", 52: "الطور", 53: "النجم", 54: "القمر",
+      55: "الرحمن", 56: "الواقعة", 57: "الحديد", 58: "المجادلة", 59: "الحشر", 60: "الممتحنة",
+      61: "الصف", 62: "الجمعة", 63: "المنافقون", 64: "التغابن", 65: "الطلاق", 66: "التحريم",
+      67: "الملك", 68: "القلم", 69: "الحاقة", 70: "المعارج", 71: "نوح", 72: "الجن",
+      73: "المزمل", 74: "المدثر", 75: "القيامة", 76: "الإنسان", 77: "المرسلات", 78: "النبأ",
+      79: "النازعات", 80: "عبس", 81: "التكوير", 82: "الانفطار", 83: "المطففين", 84: "الانشقاق",
+      85: "البروج", 86: "الطارق", 87: "الأعلى", 88: "الغاشية", 89: "الفجر", 90: "البلد",
+      91: "الشمس", 92: "الليل", 93: "الضحى", 94: "الشرح", 95: "التين", 96: "العلق",
+      97: "القدر", 98: "البينة", 99: "الزلزلة", 100: "العاديات", 101: "القارعة", 102: "التكاثر",
+      103: "العصر", 104: "الهمزة", 105: "الفيل", 106: "قريش", 107: "الماعون", 108: "الكوثر",
+      109: "الكافرون", 110: "النصر", 111: "المسد", 112: "الإخلاص", 113: "الفلق", 114: "الناس"
+    };
+
     const levelTranslations = {
       'major_topic': 'Major Topic',
       'section': 'Section',
@@ -664,6 +686,21 @@
         const response = await fetch('data/quran_topics.json');
         const data = await response.json();
         allTopics = data.topics || [];
+
+        // Build hierarchical context (parent section and major topic)
+        let currentMajor = '';
+        let currentSection = '';
+        allTopics.forEach(t => {
+          if (t.level === 'major_topic') {
+            currentMajor = t.title;
+            currentSection = '';
+          } else if (t.level === 'section') {
+            currentSection = t.title;
+          }
+          t.parentSection = currentSection;
+          t.parentMajor = currentMajor;
+        });
+
         renderTopics(allTopics);
       } catch (err) {
         console.warn('Could not load data/quran_topics.json directly.', err);
@@ -713,43 +750,109 @@
         }).join('');
 
         const colText = item.column === 'right' ? 'Right Column' : 'Left Column';
+        const parentInfo = item.parentSection && item.level === 'subtopic' ? ` &bull; Section: <strong>${item.parentSection}</strong>` : '';
+        const matchBadge = item._matchReason ? `<span style="display:inline-block; margin-left:8px; font-size:0.75rem; color:#b45309; background:#fef3c7; border:1px solid #fcd34d; padding:1px 6px; border-radius:4px;">${item._matchReason}</span>` : '';
 
         return `
           <div class="topic-card">
             <div class="topic-header">
-              <div class="topic-title">${item.title}</div>
+              <div class="topic-title">${item.title} ${matchBadge}</div>
               <span class="topic-level-badge ${levelClass}">${levelTranslations[item.level] || item.level}</span>
             </div>
             ${refsHtml ? `<div class="references-container">${refsHtml}</div>` : ''}
-            <span class="page-tag">Page: ${item.page_number} &bull; ${colText}</span>
+            <span class="page-tag">Page: ${item.page_number} &bull; ${colText}${parentInfo}</span>
           </div>
         `;
       }).join('');
     }
 
+    function normalizeArabic(str) {
+      if (!str) return '';
+      return str
+        .replace(/[\u064B-\u065F\u0670]/g, '')
+        .replace(/[أإآٱ]/g, 'ا')
+        .replace(/ة/g, 'ه')
+        .replace(/ى/g, 'ي')
+        .trim()
+        .toLowerCase();
+    }
+
     function applyFilters() {
-      const query = document.getElementById('topicSearch').value.trim().toLowerCase();
+      const rawQuery = document.getElementById('topicSearch').value.trim();
+      const normQuery = normalizeArabic(rawQuery);
+      const lowerQuery = rawQuery.toLowerCase();
 
-      let filtered = allTopics.filter(t => {
-        if (currentFilter !== 'all' && t.level !== currentFilter) {
-          return false;
-        }
-        if (!query) return true;
+      if (!rawQuery) {
+        let filtered = allTopics.filter(t => currentFilter === 'all' || t.level === currentFilter);
+        filtered.forEach(t => delete t._matchReason);
+        renderTopics(filtered);
+        return;
+      }
 
-        if (t.title.toLowerCase().includes(query)) return true;
+      // Detect if user is specifically searching by Surah name or number
+      const isSurahExplicit = lowerQuery.startsWith('surah ') || normQuery.startsWith('سوره ') || normQuery.startsWith('سورة ') || /^\d+$/.test(rawQuery);
+      const cleanSurahQuery = lowerQuery.replace(/^surah\s*/, '').trim();
+      const cleanArabicSurahQuery = normQuery.replace(/^سورة\s*|^سوره\s*/, '').trim();
 
-        if (t.references) {
-          return t.references.some(r => {
-            if (r.surah_number.toString() === query) return true;
-            const name = (surahNamesEn[r.surah_number] || '').toLowerCase();
-            if (name.includes(query)) return true;
+      const rank1 = []; // Direct match in Topic Title
+      const rank2 = []; // Match in Parent Section or Major Topic
+      const rank3 = []; // Match in cited Surah name / number
+
+      allTopics.forEach(t => {
+        delete t._matchReason;
+        if (currentFilter !== 'all' && t.level !== currentFilter) return;
+
+        const titleNorm = normalizeArabic(t.title);
+        const titleLower = (t.title || '').toLowerCase();
+        const secNorm = normalizeArabic(t.parentSection || '');
+        const secLower = (t.parentSection || '').toLowerCase();
+        const majorNorm = normalizeArabic(t.parentMajor || '');
+        const majorLower = (t.parentMajor || '').toLowerCase();
+
+        if (titleNorm.includes(normQuery) || titleLower.includes(lowerQuery)) {
+          rank1.push(t);
+        } else if (secNorm.includes(normQuery) || secLower.includes(lowerQuery) || majorNorm.includes(normQuery) || majorLower.includes(lowerQuery)) {
+          rank2.push(t);
+        } else if (t.references) {
+          let matchedSurahName = '';
+          const matchSurah = t.references.some(r => {
+            const sNum = r.surah_number.toString();
+            if (sNum === rawQuery || sNum === cleanSurahQuery || sNum === cleanArabicSurahQuery) {
+              matchedSurahName = surahNamesEn[r.surah_number] || '';
+              return true;
+            }
+            const sNameLower = (surahNamesEn[r.surah_number] || '').toLowerCase();
+            const sNameAr = normalizeArabic(surahNamesAr[r.surah_number] || '');
+            if (isSurahExplicit && (sNameLower.includes(cleanSurahQuery) || sNameAr.includes(cleanArabicSurahQuery))) {
+              matchedSurahName = surahNamesEn[r.surah_number] || '';
+              return true;
+            }
+            if (!isSurahExplicit && (sNameLower === lowerQuery || sNameAr === normQuery)) {
+              matchedSurahName = surahNamesEn[r.surah_number] || '';
+              return true;
+            }
             return false;
           });
+          if (matchSurah) {
+            t._matchReason = `📖 Cites Surah ${matchedSurahName}`;
+            rank3.push(t);
+          }
         }
-        return false;
       });
 
-      renderTopics(filtered);
+      let results;
+      if (isSurahExplicit) {
+        results = rank3.concat(rank1, rank2);
+      } else {
+        // Direct title and section hierarchy matches first!
+        results = rank1.concat(rank2);
+        // Only append surah matches if there are no direct thematic matches
+        if (results.length === 0) {
+          results = rank3;
+        }
+      }
+
+      renderTopics(results);
     }
 
     document.getElementById('topicSearch').addEventListener('input', applyFilters);
