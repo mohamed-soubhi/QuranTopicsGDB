@@ -39,6 +39,7 @@ Extraction, structured formatting, multi-model comparative audit, and canonical 
 | **[`index.html`](index.html)** / **[`index_en.html`](index_en.html)** | Interactive web portal (Arabic & English) with real-time search, filters, and stat cards. |
 | **[`book.html`](book.html)** / **[`book_en.html`](book_en.html)** | Interactive reader (Arabic & English) with on-demand Ayah popovers. |
 | **[`report.html`](report.html)** / **[`report_en.html`](report_en.html)** | Multi-model extraction and comparative audit report (Arabic & English). |
+| **[`data/quran_topics.db`](data/quran_topics.db)** | Complete SQLite database with FTS5 search, relational foreign keys, views, and canonical Ayah texts (2.6 MB). |
 | **[`data/quran_text_hafs.json`](data/quran_text_hafs.json)** | Complete canonical Quran text (6,236 Ayahs) used for instant offline popovers. |
 | **[`data/quran_topics.json`](data/quran_topics.json)** | Golden structured JSON dataset conforming to Marqoom data standards. |
 | **[`data/quran_topics_book.json`](data/quran_topics_book.json)** | Book-layout structured JSON (page by page, column by column). |
@@ -55,6 +56,33 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 pre-commit install
+```
+
+## SQLite Database & Python API
+
+Build or query the portable SQLite database:
+
+```bash
+# Build the SQLite database from JSON sources
+python3 build_db.py
+
+# Query with sqlite3 CLI
+sqlite3 data/quran_topics.db "SELECT title, level, page_number FROM topics WHERE title LIKE '%محمد%';"
+```
+
+Using the Python API (`src/db.py`):
+
+```python
+from src.db import search_topics, get_topic_by_id, get_topics_by_ayah
+
+# Search topics with ranked hierarchy
+results = search_topics("محمد")
+
+# Get topic details with complete Ayah texts
+topic = get_topic_by_id(1)
+
+# Find all topics that cite Ayah al-Kursi (2:255)
+citing_topics = get_topics_by_ayah(surah_number=2, ayah_number=255)
 ```
 
 ## Running Tests & Pre-Commit Linters
