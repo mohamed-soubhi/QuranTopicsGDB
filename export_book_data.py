@@ -109,6 +109,45 @@ def build_book_json_and_html():
     current_topic_name = ""
     page_continuations = {}
 
+    def clean_block_lines(lines):
+        if not lines or len(lines) <= 1:
+            return lines
+        new_lines = list(lines)
+        i = 0
+        while i < len(new_lines) - 1:
+            l1 = new_lines[i].rstrip()
+            l2 = new_lines[i+1].lstrip()
+            mA1 = re.search(r'([٠-٩]+)\s*[-–]\s*$', l1)
+            mA2 = re.match(r'^([٠-٩]+)(.*)$', l2)
+            mB1 = re.search(r'([٠-٩]+)\s*$', l1)
+            mB2 = re.match(r'^[-–]\s*([٠-٩]+)(.*)$', l2)
+            mC1 = re.search(r'([٠-٩]+)\s*[-–]\s*$', l1)
+            mC2 = re.match(r'^[-–]\s*([٠-٩]+)(.*)$', l2)
+            target_m1, target_m2 = None, None
+            if mC1 and mC2:
+                target_m1, target_m2 = mC1, mC2
+            elif mA1 and mA2:
+                target_m1, target_m2 = mA1, mA2
+            elif mB1 and mB2:
+                target_m1, target_m2 = mB1, mB2
+            if target_m1 and target_m2:
+                from_n = target_m1.group(1)
+                to_n = target_m2.group(1)
+                rest_l2 = target_m2.group(2).lstrip()
+                punct = ''
+                if rest_l2.startswith('،') or rest_l2.startswith(','):
+                    punct = rest_l2[0]
+                    rest_l2 = rest_l2[1:].lstrip()
+                new_lines[i] = l1[:target_m1.start()] + f'{from_n} - {to_n}' + punct
+                if rest_l2:
+                    new_lines[i+1] = rest_l2
+                    i += 1
+                else:
+                    new_lines.pop(i+1)
+            else:
+                i += 1
+        return new_lines
+
     for page in claude_data.get("pages", []):
         p_num = page.get("pdf_page")
         p_obj = {
@@ -143,7 +182,7 @@ def build_book_json_and_html():
             if "inline_first_line" in block:
                 new_block["inline_first_line"] = block["inline_first_line"]
             if "lines" in block:
-                new_block["lines"] = block["lines"]
+                new_block["lines"] = clean_block_lines(block["lines"])
 
             if "references" in block:
                 citations = []
@@ -526,6 +565,7 @@ def build_book_json_and_html():
       transition: all 0.15s ease;
       border-radius: 2px;
       padding: 0 1px;
+      display: inline-block;
       white-space: nowrap;
     }
     .a-ref:hover, .a-ref.active-ayah {
