@@ -1,7 +1,7 @@
 # QuranTopicsGDB (فهرس مواضيع القرآن الكريم)
 
 [![Marqoom Standards Compliant](https://img.shields.io/badge/Marqoom-Compliant-0d9488.svg)](https://github.com/marqoom-specs/quranic-terminology-lint)
-[![Release](https://img.shields.io/badge/Release-v1.0.3-16a34a.svg)](https://github.com/mohamed-soubhi/QuranTopicsGDB/releases/tag/v1.0.3)
+[![Release](https://img.shields.io/badge/Release-v1.0.4-16a34a.svg)](https://github.com/mohamed-soubhi/QuranTopicsGDB/releases/tag/v1.0.4)
 [![Coverage](https://img.shields.io/badge/Surahs-114%2F114-blue.svg)](#metrics)
 
 Extraction, structured formatting, multi-model comparative audit, and canonical verification of the comprehensive Quranic Subject Index (*فهرس مواضيع القرآن الكريم*), covering 114 Surahs and 6,236 Ayahs.
@@ -10,8 +10,9 @@ Extraction, structured formatting, multi-model comparative audit, and canonical 
 
 ---
 
-## Release v1.0.3 Highlights
+## Release v1.0.4 Highlights
 
+- **Instant On-Demand Ayah Popovers (0ms Latency, Offline-Ready):** Hovering over or clicking any Ayah citation or range across all 48 pages pops up the full canonical Quranic text in RasmUthmani with Surah names and ayah numbering. Powered by local lazy-loaded JSON (`data/quran_text_hafs.json`) without any page weight overhead.
 - **Full Bilingual Support:** Every page has a dedicated English and Arabic version with instant reciprocal switching:
   - Web Portal: [`index.html`](index.html) (AR) & [`index_en.html`](index_en.html) (EN).
   - Book Replica Reader: [`book.html`](book.html) (AR) & [`book_en.html`](book_en.html) (EN).
@@ -36,8 +37,9 @@ Extraction, structured formatting, multi-model comparative audit, and canonical 
 | :--- | :--- |
 | **[`BOOK_27464_1.pdf`](BOOK_27464_1.pdf)** | Original scanned physical book source document (15 MB). |
 | **[`index.html`](index.html)** / **[`index_en.html`](index_en.html)** | Interactive web portal (Arabic & English) with real-time search, filters, and stat cards. |
-| **[`book.html`](book.html)** / **[`book_en.html`](book_en.html)** | Interactive reader (Arabic & English) faithfully reproducing the printed 48 pages. |
+| **[`book.html`](book.html)** / **[`book_en.html`](book_en.html)** | Interactive reader (Arabic & English) with on-demand Ayah popovers. |
 | **[`report.html`](report.html)** / **[`report_en.html`](report_en.html)** | Multi-model extraction and comparative audit report (Arabic & English). |
+| **[`data/quran_text_hafs.json`](data/quran_text_hafs.json)** | Complete canonical Quran text (6,236 Ayahs) used for instant offline popovers. |
 | **[`data/quran_topics.json`](data/quran_topics.json)** | Golden structured JSON dataset conforming to Marqoom data standards. |
 | **[`data/quran_topics_book.json`](data/quran_topics_book.json)** | Book-layout structured JSON (page by page, column by column). |
 | **[`quran_topics_index.md`](quran_topics_index.md)** | Full Markdown thematic index preserving visual hierarchy and numeric citations. |

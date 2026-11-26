@@ -31,8 +31,8 @@ def build_golden():
             level = level_map.get(b_type, "subtopic")
 
             title = block.get("heading") or block.get("text") or ""
-            # Strip trailing colons or whitespace
-            clean_title = title.strip().rstrip(":").rstrip("：").strip()
+            # Strip trailing colons, newlines, and extraneous whitespace
+            clean_title = " ".join(title.split()).strip().rstrip(":").rstrip("：").strip()
 
             refs: List[TopicReference] = []
             for r in block.get("references", []):

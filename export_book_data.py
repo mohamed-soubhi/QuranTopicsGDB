@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Exports the book-structured JSON dataset and generates the interactive book-view HTML (Arabic & English).
+"""Exports the book-structured JSON dataset and generates the interactive book-view HTML (Arabic & English)
+with on-demand, lazy-loaded canonical Ayah text popovers.
 
 Follows Marqoom Quranic data standards and riwayah: hafs_an_asim.
 """
@@ -7,6 +8,7 @@ Follows Marqoom Quranic data standards and riwayah: hafs_an_asim.
 import json
 import os
 import re
+import urllib.request
 from src.quran_metadata import SURAHS
 
 SURAH_NAMES_STANDARDIZED = {
@@ -35,7 +37,56 @@ SURAH_NAMES_STANDARDIZED = {
     111: "Masad", 112: "Ikhlas", 113: "Falaq", 114: "Nas"
 }
 
+AR_TO_INT = {
+    '٠': 0, '١': 1, '٢': 2, '٣': 3, '٤': 4,
+    '٥': 5, '٦': 6, '٧': 7, '٨': 8, '٩': 9
+}
+
+def ar_to_int(s):
+    n = 0
+    for ch in s:
+        if ch in AR_TO_INT:
+            n = n * 10 + AR_TO_INT[ch]
+    return n
+
+def int_to_ar(n):
+    ar_digits = "٠١٢٣٤٥٦٧٨٩"
+    return "".join(ar_digits[int(d)] for d in str(n))
+
+
+def ensure_quran_text_file():
+    text_file = "data/quran_text_hafs.json"
+    if os.path.exists(text_file) and os.path.getsize(text_file) > 1000000:
+        return
+    
+    print("Downloading canonical canonical Quran text from verified source...")
+    url = "https://api.alquran.cloud/v1/quran/quran-uthmani"
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(req, timeout=20) as r:
+        raw = json.loads(r.read().decode("utf-8"))
+
+    surahs = raw.get("data", {}).get("surahs", [])
+    ayah_map = {}
+    for s in surahs:
+        s_num = s["number"]
+        for a in s["ayahs"]:
+            a_num = a["numberInSurah"]
+            ayah_map[f"{s_num}:{a_num}"] = a["text"].strip()
+
+    output = {
+        "riwayah": "hafs_an_asim",
+        "total_surahs": 114,
+        "total_ayahs": 6236,
+        "ayahs": ayah_map
+    }
+    with open(text_file, "w", encoding="utf-8") as f:
+        json.dump(output, f, ensure_ascii=False, separators=(",", ":"))
+    print(f"Generated {text_file} successfully.")
+
+
 def build_book_json_and_html():
+    ensure_quran_text_file()
+
     with open("claude-extraction/quran_index.json", "r", encoding="utf-8") as f:
         claude_data = json.load(f)
 
@@ -68,9 +119,9 @@ def build_book_json_and_html():
             }
 
             if "text" in block:
-                new_block["text"] = block["text"]
+                new_block["text"] = " ".join(block["text"].split())
             if "heading" in block:
-                new_block["heading"] = block["heading"]
+                new_block["heading"] = " ".join(block["heading"].split())
             if "inline_first_line" in block:
                 new_block["inline_first_line"] = block["inline_first_line"]
             if "lines" in block:
@@ -117,31 +168,49 @@ def build_book_json_and_html():
     sec_end = raw_html.rfind("</section>") + len("</section>")
     raw_sections = raw_html[sec_start:sec_end]
 
-    # Arabic Tooltip replacer
-    def replace_surah_ar(match):
-        s_num_str = match.group(1)
-        try:
-            s_num = int(s_num_str)
-            s_name = SURAHS.get(s_num, {}).get("name", "")
-            title_attr = f' title="سورة {s_name} ({s_num})"'
-        except Exception:
-            title_attr = ''
-        return f'<bdi class="s"{title_attr}>{s_num_str}</bdi>'
+    # Drop newlines / <br> from within topic headings (<h3> and .sub and .section)
+    def clean_heading_html(m):
+        tag = m.group(1)
+        attrs = m.group(2) or ""
+        inner = m.group(3).replace("<br>", " ").replace("<br/>", " ").replace("\n", " ")
+        cleaned = " ".join(inner.split())
+        return f"<{tag}{attrs}>{cleaned}</{tag}>"
 
-    sections_ar = re.sub(r'<bdi class="s">(\d+)</bdi>', replace_surah_ar, raw_sections)
+    raw_sections = re.sub(r'<(h3)([^>]*)>(.*?)</\1>', clean_heading_html, raw_sections, flags=re.DOTALL)
 
-    # English Tooltip replacer
-    def replace_surah_en(match):
-        s_num_str = match.group(1)
-        try:
-            s_num = int(s_num_str)
-            s_name_en = SURAH_NAMES_STANDARDIZED.get(s_num, "")
-            title_attr = f' title="Surah {s_name_en} ({s_num})"'
-        except Exception:
-            title_attr = ''
-        return f'<bdi class="s"{title_attr}>{s_num_str}</bdi>'
+    num_pattern = re.compile(r'([٠-٩]+)(?:\s*[-–]\s*([٠-٩]+))?')
 
-    sections_en = re.sub(r'<bdi class="s">(\d+)</bdi>', replace_surah_en, raw_sections)
+    def tag_ayah_citations(html_text, is_english=False):
+        def process_citation_span(match):
+            span_content = match.group(1)
+            parts = re.split(r'(<bdi class=\"s\"[^>]*>\d+</bdi>)', span_content)
+            current_surah = None
+            annotated = []
+            for p in parts:
+                s_m = re.search(r'>(\d+)<', p)
+                if s_m:
+                    current_surah = int(s_m.group(1))
+                    if is_english:
+                        s_name_en = SURAH_NAMES_STANDARDIZED.get(current_surah, "")
+                        annotated.append(f'<bdi class="s" title="Surah {s_name_en} ({current_surah})">{current_surah}</bdi>')
+                    else:
+                        s_name_ar = SURAHS.get(current_surah, {}).get("name", "")
+                        annotated.append(f'<bdi class="s" title="سورة {s_name_ar} ({current_surah})">{current_surah}</bdi>')
+                elif current_surah:
+                    def repl(m):
+                        from_num = ar_to_int(m.group(1))
+                        to_num = ar_to_int(m.group(2)) if m.group(2) else from_num
+                        raw_txt = m.group(0)
+                        return f'<span class="a-ref" data-s="{current_surah}" data-from="{from_num}" data-to="{to_num}" title="عرض نص الآية">{raw_txt}</span>'
+                    annotated.append(num_pattern.sub(repl, p))
+                else:
+                    annotated.append(p)
+            return '<span class="l">' + ''.join(annotated) + '</span>'
+
+        return re.sub(r'<span class=\"l\">(.*?)</span>', process_citation_span, html_text, flags=re.DOTALL)
+
+    sections_ar = tag_ayah_citations(raw_sections, is_english=False)
+    sections_en = tag_ayah_citations(raw_sections, is_english=True)
 
     # Build page options (Arabic & English)
     page_options_ar = []
@@ -156,12 +225,9 @@ def build_book_json_and_html():
                 break
             if not sample_title and b.get("heading"):
                 sample_title = b.get("heading")
-        if sample_title:
-            sample_title_ar = " - " + sample_title[:24]
-        else:
-            sample_title_ar = ""
-        page_options_ar.append(f'<option value="{pdf_p}">صفحة {pr_p} (PDF {pdf_p}){sample_title_ar}</option>')
-        page_options_en.append(f'<option value="{pdf_p}">Page {pr_p} (PDF {pdf_p}){sample_title_ar}</option>')
+        sample_title_clean = (" - " + sample_title[:24]) if sample_title else ""
+        page_options_ar.append(f'<option value="{pdf_p}">صفحة {pr_p} (PDF {pdf_p}){sample_title_clean}</option>')
+        page_options_en.append(f'<option value="{pdf_p}">Page {pr_p} (PDF {pdf_p}){sample_title_clean}</option>')
 
     options_html_ar = "\n".join(page_options_ar)
     options_html_en = "\n".join(page_options_en)
@@ -328,6 +394,95 @@ def build_book_json_and_html():
       border-radius: 2px;
     }
     .s:hover { background: #fee2e2; }
+
+    /* Ayah Reference Style & Hover */
+    .a-ref {
+      cursor: pointer;
+      border-bottom: 1px dotted rgba(16, 185, 129, 0.7);
+      transition: all 0.15s ease;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+    .a-ref:hover, .a-ref.active-ayah {
+      background-color: #d1fae5;
+      color: #065f46;
+      border-bottom: 1px solid #059669;
+    }
+
+    /* Floating Popover Card */
+    .ayah-popover {
+      position: absolute;
+      z-index: 2000;
+      width: 380px;
+      max-width: 90vw;
+      background: #fffdfa;
+      border: 1.5px solid #10b981;
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+      font-family: 'Amiri', 'Traditional Arabic', serif;
+      direction: rtl;
+      text-align: right;
+      overflow: hidden;
+      display: none;
+      animation: popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes popoverFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .popover-header {
+      background: #0f766e;
+      color: #ffffff;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .popover-close {
+      background: transparent;
+      border: none;
+      color: #ecfdf5;
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .popover-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .popover-body {
+      padding: 14px 18px;
+      max-height: 280px;
+      overflow-y: auto;
+      font-size: 1.25rem;
+      line-height: 2;
+      color: #1e293b;
+    }
+    .popover-ayah-item {
+      margin-bottom: 10px;
+    }
+    .popover-ayah-badge {
+      color: #059669;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-left: 6px;
+    }
+    .popover-alert {
+      background: #fefce8;
+      border: 1px solid #fef08a;
+      color: #854d0e;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-family: 'Tajawal', sans-serif;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
     .pink { background: #fce7e0; }
     .pink .title { background: #d9362b; }
     [data-page="26"] .title { background: #2e4a66; }
@@ -358,82 +513,440 @@ def build_book_json_and_html():
     }
     '''
 
-    js_code = '''
+    popover_html = '''
+  <!-- Floating Ayah Popover -->
+  <div id="ayahPopover" class="ayah-popover">
+    <div class="popover-header">
+      <span id="popoverTitle">نص الآية الكريمة</span>
+      <button class="popover-close" onclick="hidePopover()">✕</button>
+    </div>
+    <div class="popover-body" id="popoverBody">
+      جاري تحميل نص الآية...
+    </div>
+  </div>
+    '''
+
+    js_code_ar = f'''
     let isSingleMode = false;
     let currentIdx = 0;
     const sections = Array.from(document.querySelectorAll('section[data-page]'));
     const pageSelect = document.getElementById('pageSelect');
+    const popover = document.getElementById('ayahPopover');
+    const popoverTitle = document.getElementById('popoverTitle');
+    const popoverBody = document.getElementById('popoverBody');
 
-    function jumpToSelectedPage() {
+    let quranCache = null;
+    let isFetchingQuran = false;
+    let hoverTimeout = null;
+    let activeRef = null;
+
+    const surahNamesAr = {json.dumps({k: v["name"] for k, v in SURAHS.items()}, ensure_ascii=False)};
+    const surahMaxAyahs = {json.dumps({k: v["total_ayahs"] for k, v in SURAHS.items()})};
+
+    async function loadQuranText() {{
+      if (quranCache) return quranCache;
+      if (isFetchingQuran) return null;
+      isFetchingQuran = true;
+      try {{
+        const resp = await fetch('data/quran_text_hafs.json');
+        const data = await resp.json();
+        quranCache = data.ayahs || {{}};
+        isFetchingQuran = false;
+        return quranCache;
+      }} catch (err) {{
+        console.warn('Could not load data/quran_text_hafs.json directly.', err);
+        isFetchingQuran = false;
+        return null;
+      }}
+    }}
+
+    // Trigger pre-load after page load
+    window.addEventListener('load', () => {{
+      setTimeout(loadQuranText, 500);
+    }});
+
+    function hidePopover() {{
+      if (popover) popover.style.display = 'none';
+      if (activeRef) {{
+        activeRef.classList.remove('active-ayah');
+        activeRef = null;
+      }}
+    }}
+
+    async function showAyahPopover(el) {{
+      activeRef = el;
+      el.classList.add('active-ayah');
+
+      const s = parseInt(el.getAttribute('data-s'));
+      const from = parseInt(el.getAttribute('data-from'));
+      const to = parseInt(el.getAttribute('data-to'));
+
+      const sName = surahNamesAr[s] || '';
+      const maxA = surahMaxAyahs[s] || 0;
+
+      if (from === to) {{
+        popoverTitle.innerText = `سورة ${{sName}} (${{s}}) - الآية ${{from}}`;
+      }} else {{
+        popoverTitle.innerText = `سورة ${{sName}} (${{s}}) - الآيات ${{from}} إلى ${{to}}`;
+      }}
+
+      popoverBody.innerHTML = '<div style="text-align: center; color: #64748b; font-size: 1rem; padding: 10px;">جاري تحميل نص الآية الكريمة...</div>';
+
+      // Position popover
+      const rect = el.getBoundingClientRect();
+      const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+      let top = rect.bottom + scrollY + 8;
+      let left = rect.left + scrollX - 120;
+
+      // Ensure within screen bounds
+      if (left < 16) left = 16;
+      if (left + 390 > window.innerWidth) left = window.innerWidth - 410;
+
+      popover.style.top = top + 'px';
+      popover.style.left = left + 'px';
+      popover.style.display = 'block';
+
+      // Load text
+      const cache = await loadQuranText();
+
+      // Check misprint anomaly (e.g. Page 25: Surah 77: 78)
+      let alertMsg = '';
+      if (maxA > 0 && from > maxA) {{
+        alertMsg = `<div class="popover-alert">⚠️ <strong>تنبيه توثيقي:</strong> الرقم (${{from}}) خطأ مطبعي في أصل الكتاب الورقي، وسورة ${{sName}} تنتهي عند الآية ${{maxA}}.</div>`;
+      }}
+
+      if (!cache) {{
+        popoverBody.innerHTML = alertMsg || '<div style="color: #b91c1c; font-size: 0.95rem;">يتطلب عرض نصوص الآيات خادم محلي أو تصفح الموقع عبر GitHub Pages.</div>';
+        return;
+      }}
+
+      let contentHtml = '';
+      for (let a = from; a <= to; a++) {{
+        if (a > maxA && maxA > 0) continue;
+        const key = `${{s}}:${{a}}`;
+        const text = cache[key] || '';
+        if (text) {{
+          contentHtml += `
+            <div class="popover-ayah-item">
+              <span class="popover-ayah-badge">﴿${{a}}﴾</span>
+              ${{text}}
+            </div>
+          `;
+        }}
+      }}
+
+      if (!contentHtml && alertMsg) {{
+        contentHtml = alertMsg;
+      }} else if (alertMsg) {{
+        contentHtml += alertMsg;
+      }}
+
+      popoverBody.innerHTML = contentHtml || '<div style="color: #64748b;">لم يتم العثور على نص الآية في قاعدة البيانات.</div>';
+    }}
+
+    // Bind event listeners to all .a-ref
+    document.querySelectorAll('.a-ref').forEach(el => {{
+      el.addEventListener('mouseenter', () => {{
+        clearTimeout(hoverTimeout);
+        hoverTimeout = setTimeout(() => showAyahPopover(el), 180);
+      }});
+      el.addEventListener('mouseleave', () => {{
+        clearTimeout(hoverTimeout);
+      }});
+      el.addEventListener('click', (e) => {{
+        e.stopPropagation();
+        clearTimeout(hoverTimeout);
+        showAyahPopover(el);
+      }});
+    }});
+
+    // Dismiss popover on outside click
+    document.addEventListener('click', (e) => {{
+      if (popover && !popover.contains(e.target) && !e.target.classList.contains('a-ref')) {{
+        hidePopover();
+      }}
+    }});
+
+    function jumpToSelectedPage() {{
       const pageNum = pageSelect.value;
-      const targetSec = document.querySelector(`section[data-page="${pageNum}"]`);
-      if (targetSec) {
-        if (isSingleMode) {
+      const targetSec = document.querySelector(`section[data-page="${{pageNum}}"]`);
+      if (targetSec) {{
+        if (isSingleMode) {{
           sections.forEach(s => s.classList.remove('active-single'));
           targetSec.classList.add('active-single');
           currentIdx = sections.indexOf(targetSec);
-        } else {
-          targetSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }} else {{
+          targetSec.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
           targetSec.classList.add('highlight-page');
           setTimeout(() => targetSec.classList.remove('highlight-page'), 1500);
           currentIdx = sections.indexOf(targetSec);
-        }
-      }
-    }
+        }}
+      }}
+    }}
 
-    function prevPage() {
-      if (currentIdx > 0) {
+    function prevPage() {{
+      if (currentIdx > 0) {{
         currentIdx--;
         updateActivePage();
-      }
-    }
+      }}
+    }}
 
-    function nextPage() {
-      if (currentIdx < sections.length - 1) {
+    function nextPage() {{
+      if (currentIdx < sections.length - 1) {{
         currentIdx++;
         updateActivePage();
-      }
-    }
+      }}
+    }}
 
-    function updateActivePage() {
+    function updateActivePage() {{
       const sec = sections[currentIdx];
       const pageNum = sec.getAttribute('data-page');
       pageSelect.value = pageNum;
       jumpToSelectedPage();
-    }
+    }}
 
-    function toggleViewMode(singleLabel, allLabel) {
+    function toggleViewMode(singleLabel, allLabel) {{
       isSingleMode = !isSingleMode;
       const body = document.body;
       const modeBtn = document.getElementById('modeBtn');
-      if (isSingleMode) {
+      if (isSingleMode) {{
         body.classList.add('single-page-mode');
         modeBtn.innerText = allLabel;
-        sections.forEach((s, idx) => {
+        sections.forEach((s, idx) => {{
           if (idx === currentIdx) s.classList.add('active-single');
           else s.classList.remove('active-single');
-        });
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
+        }});
+        window.scrollTo({{ top: 0, behavior: 'smooth' }});
+      }} else {{
         body.classList.remove('single-page-mode');
         modeBtn.innerText = singleLabel;
         sections.forEach(s => s.classList.remove('active-single'));
-        sections[currentIdx].scrollIntoView({ behavior: 'smooth' });
-      }
-    }
+        sections[currentIdx].scrollIntoView({{ behavior: 'smooth' }});
+      }}
+    }}
 
-    function filterInBook() {
+    function filterInBook() {{
       const query = document.getElementById('filterInput').value.trim();
       if (!query) return;
-      for (let i = 0; i < sections.length; i++) {
-        if (sections[i].innerText.includes(query)) {
+      for (let i = 0; i < sections.length; i++) {{
+        if (sections[i].innerText.includes(query)) {{
           currentIdx = i;
           pageSelect.value = sections[i].getAttribute('data-page');
           jumpToSelectedPage();
           break;
-        }
-      }
-    }
+        }}
+      }}
+    }}
+    '''
+
+    js_code_en = f'''
+    let isSingleMode = false;
+    let currentIdx = 0;
+    const sections = Array.from(document.querySelectorAll('section[data-page]'));
+    const pageSelect = document.getElementById('pageSelect');
+    const popover = document.getElementById('ayahPopover');
+    const popoverTitle = document.getElementById('popoverTitle');
+    const popoverBody = document.getElementById('popoverBody');
+
+    let quranCache = null;
+    let isFetchingQuran = false;
+    let hoverTimeout = null;
+    let activeRef = null;
+
+    const surahNamesEn = {json.dumps(SURAH_NAMES_STANDARDIZED)};
+    const surahMaxAyahs = {json.dumps({k: v["total_ayahs"] for k, v in SURAHS.items()})};
+
+    async function loadQuranText() {{
+      if (quranCache) return quranCache;
+      if (isFetchingQuran) return null;
+      isFetchingQuran = true;
+      try {{
+        const resp = await fetch('data/quran_text_hafs.json');
+        const data = await resp.json();
+        quranCache = data.ayahs || {{}};
+        isFetchingQuran = false;
+        return quranCache;
+      }} catch (err) {{
+        console.warn('Could not load data/quran_text_hafs.json directly.', err);
+        isFetchingQuran = false;
+        return null;
+      }}
+    }}
+
+    window.addEventListener('load', () => {{
+      setTimeout(loadQuranText, 500);
+    }});
+
+    function hidePopover() {{
+      if (popover) popover.style.display = 'none';
+      if (activeRef) {{
+        activeRef.classList.remove('active-ayah');
+        activeRef = null;
+      }}
+    }}
+
+    async function showAyahPopover(el) {{
+      activeRef = el;
+      el.classList.add('active-ayah');
+
+      const s = parseInt(el.getAttribute('data-s'));
+      const from = parseInt(el.getAttribute('data-from'));
+      const to = parseInt(el.getAttribute('data-to'));
+
+      const sName = surahNamesEn[s] || '';
+      const maxA = surahMaxAyahs[s] || 0;
+
+      if (from === to) {{
+        popoverTitle.innerText = `Surah ${{sName}} (${{s}}) - Ayah ${{from}}`;
+      }} else {{
+        popoverTitle.innerText = `Surah ${{sName}} (${{s}}) - Ayahs ${{from}} to ${{to}}`;
+      }}
+
+      popoverBody.innerHTML = '<div style="text-align: center; color: #64748b; font-size: 1rem; padding: 10px;">Loading Ayah text...</div>';
+
+      const rect = el.getBoundingClientRect();
+      const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+      let top = rect.bottom + scrollY + 8;
+      let left = rect.left + scrollX - 120;
+
+      if (left < 16) left = 16;
+      if (left + 390 > window.innerWidth) left = window.innerWidth - 410;
+
+      popover.style.top = top + 'px';
+      popover.style.left = left + 'px';
+      popover.style.display = 'block';
+
+      const cache = await loadQuranText();
+
+      let alertMsg = '';
+      if (maxA > 0 && from > maxA) {{
+        alertMsg = `<div class="popover-alert">⚠️ <strong>Editorial Note:</strong> Ayah ${{from}} is a printing error in the source book; Surah ${{sName}} has only ${{maxA}} ayahs.</div>`;
+      }}
+
+      if (!cache) {{
+        popoverBody.innerHTML = alertMsg || '<div style="color: #b91c1c; font-size: 0.95rem;">Viewing Ayah text requires a local server or viewing via GitHub Pages.</div>';
+        return;
+      }}
+
+      let contentHtml = '';
+      for (let a = from; a <= to; a++) {{
+        if (a > maxA && maxA > 0) continue;
+        const key = `${{s}}:${{a}}`;
+        const text = cache[key] || '';
+        if (text) {{
+          contentHtml += `
+            <div class="popover-ayah-item">
+              <span class="popover-ayah-badge">﴿${{a}}﴾</span>
+              ${{text}}
+            </div>
+          `;
+        }}
+      }}
+
+      if (!contentHtml && alertMsg) {{
+        contentHtml = alertMsg;
+      }} else if (alertMsg) {{
+        contentHtml += alertMsg;
+      }}
+
+      popoverBody.innerHTML = contentHtml || '<div style="color: #64748b;">Ayah text not found in dataset.</div>';
+    }}
+
+    document.querySelectorAll('.a-ref').forEach(el => {{
+      el.addEventListener('mouseenter', () => {{
+        clearTimeout(hoverTimeout);
+        hoverTimeout = setTimeout(() => showAyahPopover(el), 180);
+      }});
+      el.addEventListener('mouseleave', () => {{
+        clearTimeout(hoverTimeout);
+      }});
+      el.addEventListener('click', (e) => {{
+        e.stopPropagation();
+        clearTimeout(hoverTimeout);
+        showAyahPopover(el);
+      }});
+    }});
+
+    document.addEventListener('click', (e) => {{
+      if (popover && !popover.contains(e.target) && !e.target.classList.contains('a-ref')) {{
+        hidePopover();
+      }}
+    }});
+
+    function jumpToSelectedPage() {{
+      const pageNum = pageSelect.value;
+      const targetSec = document.querySelector(`section[data-page="${{pageNum}}"]`);
+      if (targetSec) {{
+        if (isSingleMode) {{
+          sections.forEach(s => s.classList.remove('active-single'));
+          targetSec.classList.add('active-single');
+          currentIdx = sections.indexOf(targetSec);
+        }} else {{
+          targetSec.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+          targetSec.classList.add('highlight-page');
+          setTimeout(() => targetSec.classList.remove('highlight-page'), 1500);
+          currentIdx = sections.indexOf(targetSec);
+        }}
+      }}
+    }}
+
+    function prevPage() {{
+      if (currentIdx > 0) {{
+        currentIdx--;
+        updateActivePage();
+      }}
+    }}
+
+    function nextPage() {{
+      if (currentIdx < sections.length - 1) {{
+        currentIdx++;
+        updateActivePage();
+      }}
+    }}
+
+    function updateActivePage() {{
+      const sec = sections[currentIdx];
+      const pageNum = sec.getAttribute('data-page');
+      pageSelect.value = pageNum;
+      jumpToSelectedPage();
+    }}
+
+    function toggleViewMode(singleLabel, allLabel) {{
+      isSingleMode = !isSingleMode;
+      const body = document.body;
+      const modeBtn = document.getElementById('modeBtn');
+      if (isSingleMode) {{
+        body.classList.add('single-page-mode');
+        modeBtn.innerText = allLabel;
+        sections.forEach((s, idx) => {{
+          if (idx === currentIdx) s.classList.add('active-single');
+          else s.classList.remove('active-single');
+        }});
+        window.scrollTo({{ top: 0, behavior: 'smooth' }});
+      }} else {{
+        body.classList.remove('single-page-mode');
+        modeBtn.innerText = singleLabel;
+        sections.forEach(s => s.classList.remove('active-single'));
+        sections[currentIdx].scrollIntoView({{ behavior: 'smooth' }});
+      }}
+    }}
+
+    function filterInBook() {{
+      const query = document.getElementById('filterInput').value.trim();
+      if (!query) return;
+      for (let i = 0; i < sections.length; i++) {{
+        if (sections[i].innerText.includes(query)) {{
+          currentIdx = i;
+          pageSelect.value = sections[i].getAttribute('data-page');
+          jumpToSelectedPage();
+          break;
+        }}
+      }}
+    }}
     '''
 
     # Build Arabic book.html
@@ -478,7 +991,8 @@ def build_book_json_and_html():
     <div class="book-notice">
       <div>
         <span class="notice-title">ملاحظة التوثيق:</span>
-        هذه الصفحة مطابقة تماماً لشكل وتوزيع صفحات الكتاب الورقي الأصلي (الصفحات من ٢ إلى ٤٩، المقابلة للترقيم الورقي من ١ إلى ٤٨)، مع الحفاظ على تلوين أرقام السور بالأحمر وأرقام الآيات بالأسود، وتمرير الماوس فوق رقم السورة يعرض اسمها.
+        هذه الصفحة مطابقة تماماً لشكل وتوزيع صفحات الكتاب الورقي الأصلي (الصفحات من ٢ إلى ٤٩، المقابلة للترقيم الورقي من ١ إلى ٤٨)، مع الحفاظ على تلوين أرقام السور بالأحمر وأرقام الآيات بالأسود.
+        <strong>جديد:</strong> قم بتمرير الفأرة فوق رقم أي آية لقراءة نصها الكريم فورياً بالرسم العثماني.
       </div>
       <div>
         <a href="BOOK_27464_1.pdf" target="_blank" style="color: #047857; font-weight: bold; text-decoration: none;">📄 عرض الكتاب الأصلي PDF (15MB)</a>
@@ -490,8 +1004,10 @@ def build_book_json_and_html():
     </main>
   </div>
 
+  {popover_html}
+
   <script>
-    {js_code}
+    {js_code_ar}
   </script>
 </body>
 </html>
@@ -520,7 +1036,6 @@ def build_book_json_and_html():
       border-right: none;
       border-left: 4px solid #10b981;
     }}
-    /* Keep book pages themselves in authentic Arabic typography and RTL */
     section {{
       direction: rtl;
       text-align: right;
@@ -557,7 +1072,8 @@ def build_book_json_and_html():
     <div class="book-notice">
       <div>
         <span class="notice-title">Document Replica Note:</span>
-        This reader faithfully reproduces the original 48 printed pages (Pages 2 through 49 of the source PDF, matching printed pages 1 to 48), preserving strict two-column layout, red Surah numbers, and black Ayah ranges. Hover over any red Surah number to view its transliterated name.
+        This reader faithfully reproduces the original 48 printed pages (Pages 2 through 49 of the source PDF, matching printed pages 1 to 48), preserving strict two-column layout, red Surah numbers, and black Ayah ranges.
+        <strong>New:</strong> Hover over any Ayah number to view its full canonical script text instantly.
       </div>
       <div>
         <a href="BOOK_27464_1.pdf" target="_blank" style="color: #047857; font-weight: bold; text-decoration: none;">📄 Original PDF (15MB)</a>
@@ -569,8 +1085,10 @@ def build_book_json_and_html():
     </main>
   </div>
 
+  {popover_html}
+
   <script>
-    {js_code}
+    {js_code_en}
   </script>
 </body>
 </html>
