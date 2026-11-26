@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quran Thematic Index | QuranTopicsGDB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0d9488;
+      --primary-dark: #0f766e;
+      --primary-darker: #115e59;
+      --primary-light: #ccfbf1;
+      --accent: #d97706;
+      --surface: #ffffff;
+      --surface-variant: #f8fafc;
+      --bg: #f1f5f9;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #16a34a;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-arabic: 'Cairo', 'Amiri', serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-ui);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-dark) 50%, var(--primary) 100%);
+      color: white;
+      padding: 4rem 1rem 3.5rem;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 10px 25px -5px rgba(15, 118, 110, 0.3);
+    }
+
+    .hero-title {
+      font-size: 2.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      opacity: 0.95;
+      max-width: 820px;
+      margin: 0 auto 1.75rem;
+      font-weight: 500;
+    }
+
+    .hero-badges {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .hero-badge {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.4rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-lang {
+      background-color: #f59e0b;
+      color: #1e293b;
+    }
+    .btn-lang:hover {
+      background-color: #d97706;
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .btn-accent {
+      background-color: var(--accent);
+      color: white;
+    }
+    .btn-accent:hover {
+      background-color: #b45309;
+      transform: translateY(-1px);
+    }
+
+    .btn-green {
+      background-color: #059669;
+      color: white;
+    }
+    .btn-green:hover {
+      background-color: #047857;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Stats Grid */
+    .stats-section {
+      margin-top: -2.5rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+
+    .stat-card .value {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+    }
+
+    .stat-card .label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .stat-card .desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* Search & Explorer */
+    .explorer-section {
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      margin-bottom: 3rem;
+    }
+
+    .explorer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 1rem;
+    }
+
+    .explorer-header h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .search-box-wrapper {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.875rem 1.25rem;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      font-family: var(--font-ui);
+      font-size: 1.05rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--primary);
+    }
+
+    .filters-bar {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--surface-variant);
+      border: 1px solid var(--border);
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .results-info {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    /* Topic Cards */
+    .topics-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-height: 750px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .topic-card {
+      background: var(--surface-variant);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .topic-card:hover {
+      border-color: var(--primary);
+      transform: translateX(2px);
+    }
+
+    .topic-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .topic-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--primary-darker);
+      font-family: var(--font-arabic);
+      direction: rtl;
+    }
+
+    .topic-level-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .topic-level-major { background: #dbeafe; color: #1e40af; }
+    .topic-level-section { background: #fef3c7; color: #92400e; }
+    .topic-level-subtopic { background: #e2e8f0; color: #334155; }
+
+    .references-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .ref-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.35rem 0.65rem;
+      font-size: 0.85rem;
+    }
+
+    .ref-surah {
+      font-weight: 800;
+      color: #b91c1c; /* Red */
+    }
+
+    .ref-ayahs {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .page-tag {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      display: block;
+    }
+
+    /* Information Sections */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 1.75rem;
+    }
+
+    .info-card h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-card p, .info-card li {
+      font-size: 0.95rem;
+      color: #334155;
+      line-height: 1.7;
+    }
+
+    .info-card ul {
+      padding-left: 1.25rem;
+      margin-top: 0.75rem;
+    }
+
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 2.5rem 1rem;
+      text-align: center;
+      margin-top: auto;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: #2dd4bf;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <h1 class="hero-title">Quran Thematic Index Database</h1>
+      <p class="hero-subtitle">
+        The comprehensive canonical open dataset categorizing Quranic subjects across Surahs and Ayahs
+      </p>
+      <div class="hero-badges">
+        <span class="hero-badge">Source: Pages 2–49 of Printed Index</span>
+        <span class="hero-badge">Riwayah: Hafs 'an 'Asim (Kufi: 6,236 Ayahs)</span>
+        <span class="hero-badge">Marqoom Specs: quranic-data v0.5.0</span>
+        <span class="hero-badge">Release: v1.0.2</span>
+      </div>
+      <div class="hero-actions">
+        <a href="index.html" class="btn btn-lang">🌐 العربية (Arabic Version)</a>
+        <a href="#explorer" class="btn btn-accent">Explore Digital Index</a>
+        <a href="book_en.html" class="btn btn-green">📖 Exact Book-View Reader</a>
+        <a href="report_en.html" class="btn btn-outline">Audit & Benchmark Report</a>
+        <a href="BOOK_27464_1.pdf" class="btn btn-outline" download>📥 Download Source PDF</a>
+        <a href="data/quran_topics_book.json" class="btn btn-outline" download>💾 Book-Pages JSON</a>
+        <a href="data/quran_topics.json" class="btn btn-outline" download>💾 Standard Marqoom JSON</a>
+        <a href="https://github.com/mohamed-soubhi/QuranTopicsGDB" class="btn btn-outline" target="_blank">GitHub Repo</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Statistics Overview -->
+  <div class="container stats-section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="value">114 / 114</div>
+        <div class="label">Surah Coverage</div>
+        <div class="desc">100% of Quran Surahs indexed</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">1,292</div>
+        <div class="label">Thematic Entries</div>
+        <div class="desc">Major topics & detailed subtopics</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">10,767</div>
+        <div class="label">Ayah Citations</div>
+        <div class="desc">Sequential ayahs and ranges</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">99.991%</div>
+        <div class="label">Canonical Validity</div>
+        <div class="desc">Verified against Kufi count</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Explorer Section -->
+  <main class="container" id="explorer">
+    <section class="explorer-section">
+      <div class="explorer-header">
+        <h2>Interactive Quranic Subject Explorer</h2>
+        <div id="resultsCount" class="results-info">Loading dataset...</div>
+      </div>
+
+      <!-- Search Input -->
+      <div class="search-box-wrapper">
+        <input 
+          type="text" 
+          id="topicSearch" 
+          class="search-input" 
+          placeholder="Search topics or Surah name/number (e.g., Tawhid, Prayer, Ibrahim, Surah 2)..."
+          autocomplete="off"
+        >
+      </div>
+
+      <!-- Filters -->
+      <div class="filters-bar">
+        <span style="font-weight: 700; font-size: 0.9rem;">Filter by Level:</span>
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="major_topic">Major Topics</button>
+        <button class="filter-btn" data-filter="section">Sections</button>
+        <button class="filter-btn" data-filter="topic">Topics</button>
+        <button class="filter-btn" data-filter="subtopic">Subtopics</button>
+      </div>
+
+      <!-- Dynamic Topic List -->
+      <div class="topics-list" id="topicsContainer">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </section>
+
+    <!-- Project Info Cards -->
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>Digitization & Canonical Verification</h3>
+        <p>
+          The printed index was extracted and verified through advanced multi-stage processing:
+        </p>
+        <ul>
+          <li><strong>Two-Column Isolation:</strong> Following Arabic reading order (Right Column top-to-bottom, then Left Column) preventing cross-column text collision.</li>
+          <li><strong>Color Channel Separation:</strong> Distinguishing red Western Surah digits from black Eastern Ayah ranges.</li>
+          <li><strong>Canonical Hafs Bounds:</strong> Validating every citation against canonical Hafs 'an 'Asim bounds (Kufi 6,236 Ayahs).</li>
+          <li><strong>Marqoom Standards:</strong> Strict adherence to standardized fields (<code>surah_number</code>, <code>ayah_number</code>).</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h3>Tri-Model Audit & Print Discovery</h3>
+        <p>
+          Cross-evaluation across three independent models (Claude vs Gemini vs DeepSeek) achieved maximum confidence:
+        </p>
+        <ul>
+          <li><strong>Claude Superiority:</strong> Achieved 99.992% accuracy with robust bracket encapsulation.</li>
+          <li><strong>Authentic Source Misprint:</strong> Detected an authentic typographical error in the source book on Page 25 (Surah 77:78, where Surah Al-Mursalat only has 50 ayahs). Documented faithfully in metadata.</li>
+          <li><strong>Golden Dataset:</strong> Unified all verified records into <code>data/quran_topics.json</code>.</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h3>Download Formats & Open Assets</h3>
+        <p>
+          Open access to all project assets in standard formats:
+        </p>
+        <ul>
+          <li><strong>Scanned Source PDF:</strong> <a href="BOOK_27464_1.pdf" download style="color: var(--primary-dark); font-weight: bold;">BOOK_27464_1.pdf (15 MB)</a></li>
+          <li><strong>Book-View Reader:</strong> <a href="book_en.html" style="color: var(--primary-dark); font-weight: bold;">Exact 48-Page Replica Reader (book_en.html)</a></li>
+          <li><strong>Book-Pages JSON:</strong> <a href="data/quran_topics_book.json" download style="color: var(--primary-dark); font-weight: bold;">data/quran_topics_book.json</a></li>
+          <li><strong>Standard Marqoom JSON:</strong> <a href="data/quran_topics.json" download style="color: var(--primary-dark); font-weight: bold;">data/quran_topics.json</a></li>
+          <li><strong>Thematic Markdown Index:</strong> <a href="quran_topics_index.md" download style="color: var(--primary-dark); font-weight: bold;">quran_topics_index.md</a></li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>Quran Thematic Index Database (QuranTopicsGDB) &copy; 2026</p>
+      <p style="margin-top: 0.5rem; font-size: 0.85rem;">
+        Conforms to Hafs 'an 'Asim (Kufi Numbering) &bull; 
+        Licensed & compliant with <a href="https://github.com/marqoom-specs/quranic-terminology-lint" target="_blank">Marqoom Specs</a> &bull;
+        Repository: <a href="https://github.com/mohamed-soubhi/QuranTopicsGDB" target="_blank">mohamed-soubhi/QuranTopicsGDB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Search & Render Script -->
+  <script>
+    let allTopics = [];
+    let currentFilter = 'all';
+
+    const surahNamesEn = {"1": "Fatihah", "2": "Baqarah", "3": "Ali Imran", "4": "Nisa", "5": "Maidah", "6": "Anam", "7": "Araf", "8": "Anfal", "9": "Tawbah", "10": "Yunus", "11": "Hud", "12": "Yusuf", "13": "Rad", "14": "Ibrahim", "15": "Hijr", "16": "Nahl", "17": "Isra", "18": "Kahf", "19": "Maryam", "20": "Taha", "21": "Anbiya", "22": "Hajj", "23": "Muminun", "24": "Nur", "25": "Furqan", "26": "Shuara", "27": "Naml", "28": "Qasas", "29": "Ankabut", "30": "Rum", "31": "Luqman", "32": "Sajdah", "33": "Ahzab", "34": "Saba", "35": "Fatir", "36": "Yasin", "37": "Saffat", "38": "Sad", "39": "Zumar", "40": "Ghafir", "41": "Fussilat", "42": "Shura", "43": "Zukhruf", "44": "Dukhan", "45": "Jathiyah", "46": "Ahqaf", "47": "Muhammad", "48": "Fath", "49": "Hujurat", "50": "Qaf", "51": "Dhariyat", "52": "Tur", "53": "Najm", "54": "Qamar", "55": "Rahman", "56": "Waqiah", "57": "Hadid", "58": "Mujadilah", "59": "Hashr", "60": "Mumtahanah", "61": "Saff", "62": "Jumuah", "63": "Munafiqun", "64": "Taghabun", "65": "Talaq", "66": "Tahrim", "67": "Mulk", "68": "Qalam", "69": "Haqqah", "70": "Maarij", "71": "Nuh", "72": "Jinn", "73": "Muzzammil", "74": "Muddaththir", "75": "Qiyamah", "76": "Insan", "77": "Mursalat", "78": "Naba", "79": "Naziat", "80": "Abasa", "81": "Takwir", "82": "Infitar", "83": "Mutaffifin", "84": "Inshiqaq", "85": "Buruj", "86": "Tariq", "87": "Ala", "88": "Ghashiyah", "89": "Fajr", "90": "Balad", "91": "Shams", "92": "Layl", "93": "Duha", "94": "Sharh", "95": "Tin", "96": "Alaq", "97": "Qadr", "98": "Bayyinah", "99": "Zalzalah", "100": "Adiyat", "101": "Qariah", "102": "Takathur", "103": "Asr", "104": "Humazah", "105": "Fil", "106": "Quraysh", "107": "Maun", "108": "Kawthar", "109": "Kafirun", "110": "Nasr", "111": "Masad", "112": "Ikhlas", "113": "Falaq", "114": "Nas"};
+
+    const levelTranslations = {
+      'major_topic': 'Major Topic',
+      'section': 'Section',
+      'topic': 'Topic',
+      'subtopic': 'Subtopic'
+    };
+
+    async function loadData() {
+      try {
+        const response = await fetch('data/quran_topics.json');
+        const data = await response.json();
+        allTopics = data.topics || [];
+        renderTopics(allTopics);
+      } catch (err) {
+        console.warn('Could not load data/quran_topics.json directly.', err);
+        document.getElementById('topicsContainer').innerHTML = `
+          <div style="text-align: center; padding: 2rem;">
+            <p style="font-weight: 700; color: #b91c1c;">Notice: To browse all 1,292 topics dynamically, open via GitHub Pages or a local HTTP server.</p>
+            <p style="margin-top: 0.5rem;">You can view the full index directly in: <a href="quran_topics_index.md" style="color: var(--primary);">quran_topics_index.md</a></p>
+          </div>
+        `;
+      }
+    }
+
+    function renderTopics(topics) {
+      const container = document.getElementById('topicsContainer');
+      const countEl = document.getElementById('resultsCount');
+
+      countEl.innerText = `Showing ${topics.length} of ${allTopics.length} topics`;
+
+      if (topics.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 3rem; color: var(--text-muted); font-weight: 700;">No topics matching your query</div>';
+        return;
+      }
+
+      const displayItems = topics.slice(0, 150);
+
+      container.innerHTML = displayItems.map(item => {
+        let levelClass = 'topic-level-subtopic';
+        if (item.level === 'major_topic') levelClass = 'topic-level-major';
+        if (item.level === 'section') levelClass = 'topic-level-section';
+
+        const refsHtml = (item.references || []).map(ref => {
+          const sName = surahNamesEn[ref.surah_number] || '';
+          const ayahsText = ref.ayahs.map(a => Array.isArray(a) ? `${a[0]}-${a[1]}` : a).join(', ');
+          return `
+            <div class="ref-badge">
+              <span class="ref-surah">${ref.surah_number} (${sName}):</span>
+              <span class="ref-ayahs">${ayahsText}</span>
+            </div>
+          `;
+        }).join('');
+
+        const colText = item.column === 'right' ? 'Right Column' : 'Left Column';
+
+        return `
+          <div class="topic-card">
+            <div class="topic-header">
+              <div class="topic-title">${item.title}</div>
+              <span class="topic-level-badge ${levelClass}">${levelTranslations[item.level] || item.level}</span>
+            </div>
+            ${refsHtml ? `<div class="references-container">${refsHtml}</div>` : ''}
+            <span class="page-tag">Page: ${item.page_number} &bull; ${colText}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function applyFilters() {
+      const query = document.getElementById('topicSearch').value.trim().toLowerCase();
+
+      let filtered = allTopics.filter(t => {
+        if (currentFilter !== 'all' && t.level !== currentFilter) {
+          return false;
+        }
+        if (!query) return true;
+
+        if (t.title.toLowerCase().includes(query)) return true;
+
+        if (t.references) {
+          return t.references.some(r => {
+            if (r.surah_number.toString() === query) return true;
+            const name = (surahNamesEn[r.surah_number] || '').toLowerCase();
+            if (name.includes(query)) return true;
+            return false;
+          });
+        }
+        return false;
+      });
+
+      renderTopics(filtered);
+    }
+
+    document.getElementById('topicSearch').addEventListener('input', applyFilters);
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        applyFilters();
+      });
+    });
+
+    loadData();
+  </script>
+</body>
+</html>

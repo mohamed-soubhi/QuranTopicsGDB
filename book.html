@@ -16,9 +16,7 @@
       --text: #1e293b;
       --text-muted: #64748b;
     }
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       font-family: "Amiri", "Traditional Arabic", serif;
       background: #e5e7eb;
@@ -26,8 +24,6 @@
       padding: 0;
       color: #111827;
     }
-
-    /* Top Navigation Bar */
     .top-nav {
       position: sticky;
       top: 0;
@@ -41,7 +37,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      font-family: 'Tajawal', sans-serif;
+      font-family: 'Tajawal', -apple-system, sans-serif;
     }
     .nav-brand {
       display: flex;
@@ -57,9 +53,7 @@
       align-items: center;
       gap: 6px;
     }
-    .nav-brand a:hover {
-      color: #34d399;
-    }
+    .nav-brand a:hover { color: #34d399; }
     .nav-badge {
       background: #047857;
       color: #ecfdf5;
@@ -75,7 +69,7 @@
       gap: 8px;
     }
     .nav-select, .nav-input {
-      font-family: 'Tajawal', sans-serif;
+      font-family: inherit;
       padding: 6px 12px;
       border-radius: 6px;
       border: 1px solid #475569;
@@ -84,11 +78,9 @@
       font-size: 0.85rem;
       outline: none;
     }
-    .nav-select:focus, .nav-input:focus {
-      border-color: #10b981;
-    }
+    .nav-select:focus, .nav-input:focus { border-color: #10b981; }
     .nav-btn {
-      font-family: 'Tajawal', sans-serif;
+      font-family: inherit;
       background: #334155;
       color: #f8fafc;
       border: none;
@@ -103,32 +95,18 @@
       gap: 5px;
       transition: all 0.2s;
     }
-    .nav-btn:hover {
-      background: #475569;
-      color: #fff;
-    }
-    .nav-btn.primary {
-      background: #10b981;
-      color: #064e3b;
-      font-weight: 700;
-    }
-    .nav-btn.primary:hover {
-      background: #34d399;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .nav-btn:hover { background: #475569; color: #fff; }
+    .nav-btn.primary { background: #10b981; color: #064e3b; font-weight: 700; }
+    .nav-btn.primary:hover { background: #34d399; }
+    .nav-btn.lang { background: #f59e0b; color: #1e293b; font-weight: 700; }
+    .nav-btn.lang:hover { background: #d97706; color: #fff; }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
 
-    /* Book View Container */
     .book-container {
       max-width: 1000px;
       margin: 20px auto 60px;
       padding: 0 16px;
     }
-
-    /* Notice Banner */
     .book-notice {
       background: #f8fafc;
       border: 1px solid #cbd5e1;
@@ -145,12 +123,8 @@
       flex-wrap: wrap;
       gap: 10px;
     }
-    .notice-title {
-      font-weight: 700;
-      color: #0f172a;
-    }
+    .notice-title { font-weight: 700; color: #0f172a; }
 
-    /* Book Page Layout (Faithful to physical book) */
     section {
       background: #f3f8e6;
       max-width: 900px;
@@ -161,19 +135,10 @@
       border-radius: 2px;
       position: relative;
     }
-    section.highlight-page {
-      outline: 4px solid #10b981;
-    }
-    .cols {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-    .cols > div {
-      padding: 0 16px;
-    }
-    .cols > div + div {
-      border-right: 2px solid #333333;
-    }
+    section.highlight-page { outline: 4px solid #10b981; }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; }
+    .cols > div { padding: 0 16px; }
+    .cols > div + div { border-right: 2px solid #333333; }
     .title {
       background: #3d7a4a;
       color: #ffffff;
@@ -192,20 +157,9 @@
       margin: 8px auto 12px;
       padding: 2px 20px;
     }
-    .sub {
-      font-size: 21px;
-      font-weight: bold;
-      margin: 6px 0;
-    }
-    h3 {
-      margin: 10px 0 0;
-      font-size: 20px;
-      display: inline;
-    }
-    .l {
-      font-size: 18px;
-      line-height: 1.75;
-    }
+    .sub { font-size: 21px; font-weight: bold; margin: 6px 0; }
+    h3 { margin: 10px 0 0; font-size: 20px; display: inline; }
+    .l { font-size: 18px; line-height: 1.75; }
     .s {
       color: #d0211c;
       font-weight: bold;
@@ -214,24 +168,12 @@
       padding: 0 2px;
       border-radius: 2px;
     }
-    .s:hover {
-      background: #fee2e2;
-    }
-    .pink {
-      background: #fce7e0;
-    }
-    .pink .title {
-      background: #d9362b;
-    }
-    [data-page="26"] .title {
-      background: #2e4a66;
-    }
-    [data-page="28"] .title:not(:first-child) {
-      background: #d9362b;
-    }
-    .blue {
-      background: #e6eeec;
-    }
+    .s:hover { background: #fee2e2; }
+    .pink { background: #fce7e0; }
+    .pink .title { background: #d9362b; }
+    [data-page="26"] .title { background: #2e4a66; }
+    [data-page="28"] .title:not(:first-child) { background: #d9362b; }
+    .blue { background: #e6eeec; }
     footer.book-page-footer {
       text-align: center;
       font-size: 22px;
@@ -241,39 +183,23 @@
       border-top: 1px dashed #aaa;
       padding-top: 6px;
     }
+    body.single-page-mode section { display: none; }
+    body.single-page-mode section.active-single { display: block; }
 
-    /* Single page mode hide/show */
-    body.single-page-mode section {
-      display: none;
-    }
-    body.single-page-mode section.active-single {
-      display: block;
-    }
-
-    /* Responsive */
     @media (max-width: 768px) {
-      .cols {
-        grid-template-columns: 1fr;
-      }
+      .cols { grid-template-columns: 1fr; }
       .cols > div + div {
         border-right: none;
         border-top: 2px solid #333333;
         margin-top: 16px;
         padding-top: 16px;
       }
-      .top-nav {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .nav-controls {
-        justify-content: center;
-      }
+      .top-nav { flex-direction: column; align-items: stretch; }
+      .nav-controls { justify-content: center; }
     }
-  </style>
+    </style>
 </head>
 <body>
-
-  <!-- Top Navigation Bar -->
   <nav class="top-nav">
     <div class="nav-brand">
       <a href="index.html">📖 فهرس مواضيع القرآن الكريم</a>
@@ -281,6 +207,7 @@
     </div>
 
     <div class="nav-controls">
+      <a href="book_en.html" class="nav-btn lang" title="Switch to English">🌐 English</a>
       <button class="nav-btn" onclick="prevPage()" title="الصفحة السابقة">◀ السابق</button>
       <select class="nav-select" id="pageSelect" onchange="jumpToSelectedPage()">
         <option value="2">صفحة ١ (PDF 2) - أركان الإسلام</option>
@@ -334,7 +261,7 @@
       </select>
       <button class="nav-btn" onclick="nextPage()" title="الصفحة التالية">التالي ▶</button>
       <input type="text" id="filterInput" class="nav-input" placeholder="بحث سريع في الصفحة..." oninput="filterInBook()">
-      <button class="nav-btn" id="modeBtn" onclick="toggleViewMode()">📖 عرض صفحة مفردة</button>
+      <button class="nav-btn" id="modeBtn" onclick="toggleViewMode('📖 عرض صفحة مفردة', '📜 عرض متتابع لجميع الصفحات')">📖 عرض صفحة مفردة</button>
     </div>
 
     <div class="nav-links">
@@ -349,7 +276,7 @@
     <div class="book-notice">
       <div>
         <span class="notice-title">ملاحظة التوثيق:</span>
-        هذه الصفحة مطابقة تماماً لشكل وتوزيع صفحات الكتاب الورقي الأصلي (الصفحات من ٢ إلى ٤٩، المقابلة للترقيم الورقي من ١ إلى ٤٨)، مع الحفاظ على العمودين وتلوين أرقام السور باللون الأحمر، مع إضافة خاصية تمرير الماوس فوق رقم السورة لعرض اسمها.
+        هذه الصفحة مطابقة تماماً لشكل وتوزيع صفحات الكتاب الورقي الأصلي (الصفحات من ٢ إلى ٤٩، المقابلة للترقيم الورقي من ١ إلى ٤٨)، مع الحفاظ على تلوين أرقام السور بالأحمر وأرقام الآيات بالأسود، وتمرير الماوس فوق رقم السورة يعرض اسمها.
       </div>
       <div>
         <a href="BOOK_27464_1.pdf" target="_blank" style="color: #047857; font-weight: bold; text-decoration: none;">📄 عرض الكتاب الأصلي PDF (15MB)</a>
@@ -2024,6 +1951,7 @@
   </div>
 
   <script>
+    
     let isSingleMode = false;
     let currentIdx = 0;
     const sections = Array.from(document.querySelectorAll('section[data-page]'));
@@ -2067,13 +1995,13 @@
       jumpToSelectedPage();
     }
 
-    function toggleViewMode() {
+    function toggleViewMode(singleLabel, allLabel) {
       isSingleMode = !isSingleMode;
       const body = document.body;
       const modeBtn = document.getElementById('modeBtn');
       if (isSingleMode) {
         body.classList.add('single-page-mode');
-        modeBtn.innerText = '📜 عرض متتابع لجميع الصفحات';
+        modeBtn.innerText = allLabel;
         sections.forEach((s, idx) => {
           if (idx === currentIdx) s.classList.add('active-single');
           else s.classList.remove('active-single');
@@ -2081,7 +2009,7 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         body.classList.remove('single-page-mode');
-        modeBtn.innerText = '📖 عرض صفحة مفردة';
+        modeBtn.innerText = singleLabel;
         sections.forEach(s => s.classList.remove('active-single'));
         sections[currentIdx].scrollIntoView({ behavior: 'smooth' });
       }
@@ -2099,6 +2027,7 @@
         }
       }
     }
+    
   </script>
 </body>
 </html>
