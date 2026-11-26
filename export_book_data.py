@@ -106,20 +106,35 @@ def build_book_json_and_html():
         "pages": []
     }
 
+    current_topic_name = ""
+    page_continuations = {}
+
     for page in claude_data.get("pages", []):
+        p_num = page.get("pdf_page")
         p_obj = {
-            "pdf_page": page.get("pdf_page"),
+            "pdf_page": p_num,
             "printed_page": page.get("printed_page"),
             "blocks": []
         }
-        for block in page.get("blocks", []):
+        for b_idx, block in enumerate(page.get("blocks", [])):
             b_type = block.get("type")
             b_col = block.get("column", "right")
+
+            clean_head = " ".join(block.get("heading", "").split()).strip().rstrip(":").rstrip("：").strip()
+            clean_text = " ".join(block.get("text", "").split()).strip().rstrip(":").rstrip("：").strip()
+
+            if clean_head or clean_text:
+                current_topic_name = clean_head or clean_text
+            elif block.get("references") and b_idx == 0:
+                page_continuations[p_num] = current_topic_name
 
             new_block = {
                 "type": b_type,
                 "column": b_col
             }
+
+            if not clean_head and not clean_text and block.get("references") and current_topic_name:
+                new_block["continuation_of"] = current_topic_name
 
             if "text" in block:
                 new_block["text"] = " ".join(block["text"].split())
@@ -271,6 +286,15 @@ def build_book_json_and_html():
 
     sections_ar = tag_ayah_citations(raw_sections, is_english=False)
     sections_en = tag_ayah_citations(raw_sections, is_english=True)
+
+    # Insert continuation badges at page boundaries
+    for p_num, t_name in page_continuations.items():
+        sec_pat_ar = re.compile(rf'(<section[^>]*data-page=\"{p_num}\"[^>]*>.*?)(<span class=\"l\">)', flags=re.DOTALL)
+        badge_ar = f'<div class="continuation-header"><span class="c-badge" title="استكمال لموضوع الصفحة السابقة">تابع: {t_name}</span></div>'
+        sections_ar = sec_pat_ar.sub(rf'\g<1>{badge_ar}\g<2>', sections_ar, count=1)
+
+        badge_en = f'<div class="continuation-header"><span class="c-badge" title="Continuation of topic from previous page">Continued: {t_name}</span></div>'
+        sections_en = sec_pat_ar.sub(rf'\g<1>{badge_en}\g<2>', sections_en, count=1)
 
     # Build page options (Arabic & English)
     page_options_ar = []
@@ -456,6 +480,23 @@ def build_book_json_and_html():
     .s:hover { background: #fee2e2; }
 
     /* Ayah Reference Style & Hover */
+    .continuation-header {
+      margin: 4px 0 8px;
+    }
+    .c-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.82rem;
+      font-family: 'Tajawal', -apple-system, sans-serif;
+      font-weight: 700;
+      color: #065f46;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      padding: 2px 8px;
+      border-radius: 4px;
+      cursor: default;
+    }
     .a-ref {
       cursor: pointer;
       border-bottom: 1px dotted rgba(16, 185, 129, 0.7);

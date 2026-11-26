@@ -2695,6 +2695,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "التوحيد المطلق لله تعالى",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -4186,6 +4187,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "دعوة من لا يقر بالوحدانية إلى الإعتبار بمن سبقهم",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -15357,6 +15359,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "مشيئته",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -16862,6 +16865,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "وحدانيته",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -17993,6 +17997,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "الوعد والوعيد",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -19117,6 +19122,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(٣)- عقوبة المرتدين",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -19210,6 +19216,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "أصنامهم والتهكم بهم على عبادتها",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -20504,6 +20511,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "النهي عن الشِرك والوعيد عليه",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -21782,6 +21790,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "تشبيههم بالموتى والصم والبكم والعمي",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -24439,6 +24448,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "صفات الكفار",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -25817,6 +25827,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "المقابلة بين المؤمن والكافر",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -27205,6 +27216,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "صفاتهم",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -27552,6 +27564,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "(٧)- الملحدون المنكرون ليوم البعث",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -28095,6 +28108,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "(٨)-وعيدالمفسدين والمجرمين والفاسقين",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -28546,6 +28560,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "أخلاقه وصفاته ﷺ وفضل الله عليه",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -30017,6 +30032,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "تأييد رسالته ﷺ",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -32816,6 +32832,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "مخاطبة الله إياه ﷺ",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -35753,6 +35770,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "الركوع",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -37232,6 +37250,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(٤)- القبلة",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -37508,6 +37527,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "خامساً :الزكاة والصدقات",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -38097,6 +38117,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(١)- الطعام والأغذية",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -38273,6 +38294,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(٢)- وجوب الصيام وماأعده الله للصائمين من الثواب",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -38945,6 +38967,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "(١)- العبادة لله تعالى",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -39339,6 +39362,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "(٢)- النذور",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -40458,6 +40482,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "مهمتهم في البلاغ",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -43227,6 +43252,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "النفاق",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -44648,6 +44674,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "جنات عدن",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -45399,6 +45426,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "ب- أصحابها",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -45832,6 +45860,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "ب- أصحابها",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -46202,6 +46231,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "ج - صفاتها",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -46742,6 +46772,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "آ - الخلود في العذاب",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -47132,6 +47163,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "ب- الخلود في النعيم",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -47339,6 +47371,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "ب- الخلود في النعيم",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -48618,6 +48651,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "ج - الفؤاد",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -50391,6 +50425,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "ب- أصحابها",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -51240,6 +51275,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "ب- أصحابها",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -51464,6 +51500,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "ج - صفاتها",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -52650,6 +52687,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "الكتب المقدسة",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -54255,6 +54293,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "ذكر الله جلّ وعلا",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -60138,6 +60177,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "- نفخهم في الصور",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -62697,6 +62737,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "تفضيل الآخرة على الدنيا",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -64316,6 +64357,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "الحشر",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -65728,6 +65770,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "- لكل أمة أجل محتوم",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -66772,6 +66815,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "المجادلة بالتي هي أحسن",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -68111,6 +68155,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "- ضربُ اللهِ الأمثالَ للناس",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -69307,6 +69352,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "حقيقته وتصديقه للكتب الأوائل",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -70625,6 +70671,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "وصفه ووجوب الإيمان به",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -71985,6 +72032,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(٥)- الثأر",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -73058,6 +73106,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "(٧)- الرباط",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -73487,6 +73536,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "الغنائم والأنفال",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -74129,6 +74179,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(١)- التكليف بالعمل على قدر\\nالإستطاعة",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -74527,6 +74578,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "(٣)- الدعوة إلى العمل",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -77451,6 +77503,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "العمل المفضي إلى النجاح",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -78688,6 +78741,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "العمل الآثم",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -79891,6 +79945,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "- أكل الأموال بالباطل",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -81009,6 +81064,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "انتفاء مسؤولية المرء عن عمل غيره",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -83682,6 +83738,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "الصبر",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -85039,6 +85096,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "الوفاء بالعهد",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -86398,6 +86456,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "البهتان",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -87674,6 +87733,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "سوء الظن",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -92573,6 +92633,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "شرفه ودنوه",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -93443,6 +93504,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "(٦)- الرجال",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -93578,6 +93640,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "(٧)- الرجل والمرأة",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -93727,6 +93790,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(٧)- الرجل والمرأة",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -94224,6 +94288,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(٩)- صلة ذوي القربى",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -100665,6 +100730,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "ثانيا: الزراعة",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -103425,6 +103491,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "المسؤولية الشخصية",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -104214,6 +104281,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(٣)- الحث على التفقه في الدين",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -104263,6 +104331,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(٤)- الحث على التفكر واستخدام\\nالعقل",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -104312,6 +104381,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "(٤)- الحث على التفكر واستخدام\\nالعقل",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -104501,6 +104571,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "(٥)- الحث على نشر العلم وعدم\\nكتمانه",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -106993,6 +107064,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "الحيوانات والحشرات",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -108430,6 +108502,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "الليل والنهار",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -108680,6 +108753,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(٧)- ذم الجهل والجاهلين",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -108740,6 +108814,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(٨)- الشعر والشعراء",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -108849,6 +108924,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(١٠)- فضل العلم والعلماء",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -108962,6 +109038,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(١١)- الفلك",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -109210,6 +109287,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(١٤)- المجادلة بغير علم",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -109252,6 +109330,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "(١٥)- الملاحة",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -111917,6 +111996,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "ساق",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -114209,6 +114289,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "مرض",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -116714,6 +116795,7 @@
         {
           "type": "entry",
           "column": "left",
+          "continuation_of": "العلاقة معهم",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -117943,6 +118025,7 @@
         {
           "type": "entry",
           "column": "right",
+          "continuation_of": "حالاتهم",
           "heading": "",
           "inline_first_line": false,
           "lines": [
