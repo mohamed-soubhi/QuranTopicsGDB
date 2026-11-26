@@ -398,12 +398,15 @@
         <span class="hero-badge">المصدر: الصفحات ٢ إلى ٤٩ من المطبوعة</span>
         <span class="hero-badge">الرواية: حفص عن عاصم (العد الكوفي: ٦٢٣٦ آية)</span>
         <span class="hero-badge">معايير مرقوم: quranic-data v0.5.0</span>
-        <span class="hero-badge">الإصدار: v1.0.0</span>
+        <span class="hero-badge">الإصدار: v1.0.2</span>
       </div>
       <div class="hero-actions">
         <a href="#explorer" class="btn btn-accent">استكشف الفهرس التفاعلي</a>
+        <a href="book.html" class="btn btn-accent" style="background-color: #059669;">📖 النسخة المطابقة للكتاب الورقي</a>
         <a href="report.html" class="btn btn-outline">تقرير التدقيق المقارن (HTML)</a>
-        <a href="quran_topics_index.md" class="btn btn-outline">الفهرس بصيغة Markdown</a>
+        <a href="BOOK_27464_1.pdf" class="btn btn-outline" download>📥 تحميل الكتاب الأصلي (PDF)</a>
+        <a href="data/quran_topics_book.json" class="btn btn-outline" download>💾 تحميل JSON (صفحات الكتاب)</a>
+        <a href="data/quran_topics.json" class="btn btn-outline" download>💾 تحميل JSON (المعياري)</a>
         <a href="https://github.com/mohamed-soubhi/QuranTopicsGDB" class="btn btn-outline" target="_blank">المستودع على GitHub</a>
       </div>
     </div>
@@ -494,6 +497,20 @@
           <li><strong>تفوق كلود (Claude):</strong> حقق دقة بلغت ٩٩.٩٩٢٪ وعزل الأعمدة والأرقام المحصورة بنجاح فائق.</li>
           <li><strong>اكتشاف خطأ مطبعي أصيل:</strong> تم رصد خطأ في طبعة الكتاب الأصلية بصفحة ٢٥ (سورة المرسلات ٧٧ آية ٧٨ مع أن السورة تنتهي عند الآية ٥٠) وتم توثيقه أمانةً وتدقيقاً.</li>
           <li><strong>الملف الذهبي:</strong> تم توحيد النتائج في ملف <code>data/quran_topics.json</code> المجاز بالكامل.</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h3>صيغ التنزيل والملفات المتاحة</h3>
+        <p>
+          يتيح المشروع وصولاً سهلاً ومفتوحاً للبيانات بكافة الصيغ المعيارية والمطابقة:
+        </p>
+        <ul>
+          <li><strong>الكتاب الأصلي المصور:</strong> <a href="BOOK_27464_1.pdf" download style="color: var(--primary-dark); font-weight: bold;">تحميل BOOK_27464_1.pdf (15 MB)</a></li>
+          <li><strong>النسخة المطابقة للأصل الورقي:</strong> <a href="book.html" style="color: var(--primary-dark); font-weight: bold;">فتح قارئ صفحات الكتاب (book.html)</a></li>
+          <li><strong>بيانات JSON لصفحات الكتاب:</strong> <a href="data/quran_topics_book.json" download style="color: var(--primary-dark); font-weight: bold;">data/quran_topics_book.json</a></li>
+          <li><strong>بيانات JSON المعيارية:</strong> <a href="data/quran_topics.json" download style="color: var(--primary-dark); font-weight: bold;">data/quran_topics.json</a></li>
+          <li><strong>الفهرس الشامل بصيغة Markdown:</strong> <a href="quran_topics_index.md" download style="color: var(--primary-dark); font-weight: bold;">quran_topics_index.md</a></li>
         </ul>
       </div>
     </div>

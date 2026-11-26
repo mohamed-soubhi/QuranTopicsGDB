@@ -1,16 +1,16 @@
 # قاعدة بيانات فهرس مواضيع القرآن الكريم (QuranTopicsGDB)
 
 [![معايير مرقوم القياسية](https://img.shields.io/badge/%D9%85%D8%B9%D8%A7%D9%8A%D9%8A%D8%B1-%D9%85%D8%B1%D9%82%D9%88%D9%85-0d9488.svg)](https://github.com/marqoom-specs/quranic-terminology-lint)
-[![الإصدار](https://img.shields.io/badge/%D8%A7%D9%84%D8%A5%D8%B5%D8%AF%D8%A7%D8%B1-v1.0.0-16a34a.svg)](https://github.com/mohamed-soubhi/QuranTopicsGDB/releases/tag/v1.0.0)
+[![الإصدار](https://img.shields.io/badge/%D8%A7%D9%84%D8%A5%D8%B5%D8%AF%D8%A7%D8%B1-v1.0.2-16a34a.svg)](https://github.com/mohamed-soubhi/QuranTopicsGDB/releases/tag/v1.0.2)
 [![تغطية السور](https://img.shields.io/badge/%D8%A7%D9%84%D8%B3%D9%88%D8%B1-114%2F114-blue.svg)](#إحصائيات-المشروع)
 
 مشروع استخراج، ورقمنة، ومطابقة معيارية شاملة لكتاب **فهرس مواضيع القرآن الكريم** المطبوع، وتغطيته لكافة سور القرآن الكريم (١١٤ سورة) وجميع آياته الكريمة (٦,٢٣٦ آية برواية حفص عن عاصم).
 
-[English README](README.md) • [التقرير التفاعلي (HTML)](report.html) • [تقرير المقارنة بين النماذج](COMPARISON_REPORT.md) • [الفهرس بصيغة ماركداون](quran_topics_index.md)
+[English README](README.md) • [📖 قارئ الكتاب الورقي (HTML)](book.html) • [التقرير التفاعلي (HTML)](report.html) • [تقرير المقارنة بين النماذج](COMPARISON_REPORT.md) • [📥 تحميل ملف الكتاب (PDF)](BOOK_27464_1.pdf) • [الفهرس بصيغة ماركداون](quran_topics_index.md)
 
 ---
 
-## أبرز مميزات وإحصائيات المشروع (الإصدار v1.0.0)
+## أبرز مميزات وإحصائيات المشروع (الإصدار v1.0.2)
 
 | المعيار | النتيجة المحققة |
 | :--- | :--- |
@@ -68,7 +68,9 @@
 
 ```
 QuranTopicsGDB/
-├── index.html                   # الصفحة الرئيسية التفاعلية للمشروع
+├── index.html                   # البوابة الرئيسية والبحث التفاعلي في الفهرس
+├── book.html                    # قارئ صفحات الكتاب المطابق للأصل الورقي (48 صفحة بعمودين)
+├── BOOK_27464_1.pdf             # ملف كتاب الفهرس الأصلي المصور كاملاً (15 MB)
 ├── report.html                  # تقرير التدقيق والمقارنة المرئي الشامل
 ├── quran_topics_index.md        # الفهرس الموضوعي الكامل بصيغة Markdown
 ├── COMPARISON_REPORT.md         # التقرير الفني لمقارنة النماذج الثلاثة
@@ -77,8 +79,10 @@ QuranTopicsGDB/
 ├── run_pipeline.py              # المشغل البرمجي لاستخراج صفحات المصحف
 ├── compare_extractions.py       # أداة المقارنة والتقييم الإحصائي
 ├── build_golden_dataset.py      # أداة إنتاج وتجميع البيانات المعيارية النهائية
+├── export_book_data.py          # أداة توليد قارئ الكتاب وملف JSON لصفحات الكتاب
 ├── data/
 │   ├── quran_topics.json        # قاعدة البيانات الذهبية المعتمدة وفق معايير مرقوم
+│   ├── quran_topics_book.json   # بيانات مواضيع القرآن موزعة حسب صفحات وأعمدة الكتاب الورقي
 │   └── validation_report.json   # سجل التحقق التفصيلي لجميع الآيات والسور
 └── src/
     ├── quran_metadata.py        # بيانات سور وآيات القرآن الكريم (حفص عن عاصم)
