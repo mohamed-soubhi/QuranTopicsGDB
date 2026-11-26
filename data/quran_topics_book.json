@@ -30005,7 +30005,12 @@
               "surah_number": 21,
               "surah_name_ar": "الأنبياء",
               "ayahs_original": "٣ -",
-              "ayah_ranges": []
+              "ayah_ranges": [
+                {
+                  "from_ayah": 3,
+                  "to_ayah": 3
+                }
+              ]
             }
           ]
         },
@@ -60121,7 +60126,12 @@
               "surah_number": 36,
               "surah_name_ar": "يس",
               "ayahs_original": "٤٩ -",
-              "ayah_ranges": []
+              "ayah_ranges": [
+                {
+                  "from_ayah": 49,
+                  "to_ayah": 49
+                }
+              ]
             }
           ]
         },
@@ -73459,7 +73469,12 @@
               "surah_number": 48,
               "surah_name_ar": "الفتح",
               "ayahs_original": "١٩ -",
-              "ayah_ranges": []
+              "ayah_ranges": [
+                {
+                  "from_ayah": 19,
+                  "to_ayah": 21
+                }
+              ]
             }
           ]
         }

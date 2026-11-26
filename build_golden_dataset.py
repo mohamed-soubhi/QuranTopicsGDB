@@ -60,6 +60,20 @@ def build_golden():
                     page_number=p_num,
                     column=col,
                 ))
+            elif refs and golden_topics:
+                # Merge continuation refs into the previous topic
+                for r in refs:
+                    existing_ref = None
+                    for ex in golden_topics[-1].references:
+                        if ex.surah_number == r.surah_number:
+                            existing_ref = ex
+                            break
+                    if existing_ref:
+                        for a in r.ayahs:
+                            if a not in existing_ref.ayahs:
+                                existing_ref.ayahs.append(a)
+                    else:
+                        golden_topics[-1].references.append(r)
 
     # Save outputs
     save_outputs(golden_topics, "quran_topics_index.md", "data/quran_topics.json")

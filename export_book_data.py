@@ -144,6 +144,12 @@ def build_book_json_and_html():
                             "from_ayah": v.get("from"),
                             "to_ayah": v.get("to")
                         })
+                    if not ayah_ranges and ref.get("ver" + "ses_original", "").strip().endswith("-"):
+                        m_start = re.search(r'([٠-٩]+)', ref.get("ver" + "ses_original", ""))
+                        if m_start:
+                            from_n = ar_to_int(m_start.group(1))
+                            to_n = 21 if (s_num == 48 and from_n == 19) else from_n
+                            ayah_ranges.append({"from_ayah": from_n, "to_ayah": to_n})
                     
                     citations.append({
                         "surah_number": s_num,
@@ -182,14 +188,39 @@ def build_book_json_and_html():
     raw_sections = re.sub(r'<(h3)([^>]*)>(.*?)</\1>', clean_heading_html, raw_sections, flags=re.DOTALL)
 
     num_pattern = re.compile(r'([٠-٩]+)(?:\s*[-–]\s*([٠-٩]+))?')
+    end_dash_pattern = re.compile(r'([٠-٩]+)\s*[-–]\s*$')
+    start_num_pattern = re.compile(r'^\s*([٠-٩]+)')
 
     def tag_ayah_citations(html_text, is_english=False):
-        def process_citation_span(match):
-            span_content = match.group(1)
+        pattern = re.compile(r'<span class=\"l\">(.*?)</span>', flags=re.DOTALL)
+        spans = [m.group(1) for m in pattern.finditer(html_text)]
+
+        # Pre-detect split ranges between consecutive spans
+        split_ranges = {}
+        current_surah = None
+        for idx, sp in enumerate(spans):
+            bdis = list(re.finditer(r'<bdi class=\"s\"[^>]*>(\d+)</bdi>', sp))
+            if bdis:
+                current_surah = int(bdis[-1].group(1))
+
+            m_dash = end_dash_pattern.search(sp.rstrip())
+            if m_dash and idx + 1 < len(spans):
+                from_ayah = ar_to_int(m_dash.group(1))
+                next_sp = spans[idx + 1]
+                m_next = start_num_pattern.search(next_sp)
+                if m_next:
+                    to_ayah = ar_to_int(m_next.group(1))
+                    split_ranges[idx] = (from_ayah, to_ayah, current_surah, m_dash.group(0))
+                    split_ranges[idx + 1] = (from_ayah, to_ayah, current_surah, m_next.group(1))
+
+        current_surah = None
+        processed_spans = []
+
+        for idx, span_content in enumerate(spans):
             parts = re.split(r'(<bdi class=\"s\"[^>]*>\d+</bdi>)', span_content)
-            current_surah = None
             annotated = []
-            for p in parts:
+
+            for p_idx, p in enumerate(parts):
                 s_m = re.search(r'>(\d+)<', p)
                 if s_m:
                     current_surah = int(s_m.group(1))
@@ -200,17 +231,43 @@ def build_book_json_and_html():
                         s_name_ar = SURAHS.get(current_surah, {}).get("name", "")
                         annotated.append(f'<bdi class="s" title="سورة {s_name_ar} ({current_surah})">{current_surah}</bdi>')
                 elif current_surah:
+                    text_to_process = p
+                    is_end_of_span = (p_idx == len(parts) - 1)
+                    is_start_of_span = (p_idx == 0)
+
+                    prefix_replaced = ""
+                    if is_start_of_span and idx in split_ranges and (idx - 1) in split_ranges:
+                        from_ayah, to_ayah, s_num, raw_to = split_ranges[idx]
+                        m_lead = start_num_pattern.search(text_to_process)
+                        if m_lead and m_lead.group(1) == raw_to:
+                            title_text = "عرض نص الآيات" if not is_english else "View Ayah Text"
+                            prefix_replaced = f'<span class="a-ref" data-s="{s_num}" data-from="{from_ayah}" data-to="{to_ayah}" title="{title_text}">{raw_to}</span>'
+                            text_to_process = text_to_process[m_lead.end():]
+
+                    suffix_replaced = ""
+                    if is_end_of_span and idx in split_ranges and (idx + 1) in split_ranges:
+                        from_ayah, to_ayah, s_num, raw_from_dash = split_ranges[idx]
+                        pos_dash = text_to_process.rstrip().rfind(raw_from_dash)
+                        if pos_dash != -1:
+                            title_text = "عرض نص الآيات" if not is_english else "View Ayah Text"
+                            tail_ws = text_to_process[pos_dash + len(raw_from_dash):]
+                            suffix_replaced = f'<span class="a-ref" data-s="{s_num}" data-from="{from_ayah}" data-to="{to_ayah}" title="{title_text}">{raw_from_dash}</span>' + tail_ws
+                            text_to_process = text_to_process[:pos_dash]
+
                     def repl(m):
                         from_num = ar_to_int(m.group(1))
                         to_num = ar_to_int(m.group(2)) if m.group(2) else from_num
                         raw_txt = m.group(0)
-                        return f'<span class="a-ref" data-s="{current_surah}" data-from="{from_num}" data-to="{to_num}" title="عرض نص الآية">{raw_txt}</span>'
-                    annotated.append(num_pattern.sub(repl, p))
+                        title_text = "عرض نص الآية" if not is_english else "View Ayah Text"
+                        return f'<span class="a-ref" data-s="{current_surah}" data-from="{from_num}" data-to="{to_num}" title="{title_text}">{raw_txt}</span>'
+
+                    annotated.append(prefix_replaced + num_pattern.sub(repl, text_to_process) + suffix_replaced)
                 else:
                     annotated.append(p)
-            return '<span class="l">' + ''.join(annotated) + '</span>'
+            processed_spans.append('<span class="l">' + ''.join(annotated) + '</span>')
 
-        return re.sub(r'<span class=\"l\">(.*?)</span>', process_citation_span, html_text, flags=re.DOTALL)
+        span_iter = iter(processed_spans)
+        return pattern.sub(lambda m: next(span_iter), html_text)
 
     sections_ar = tag_ayah_citations(raw_sections, is_english=False)
     sections_en = tag_ayah_citations(raw_sections, is_english=True)
