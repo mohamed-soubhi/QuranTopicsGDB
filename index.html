@@ -732,9 +732,21 @@
       }).join('');
     }
 
+    function normalizeArabic(str) {
+      if (!str) return '';
+      return str
+        .replace(/[\u064B-\u065F\u0670]/g, '')
+        .replace(/[أإآٱ]/g, 'ا')
+        .replace(/ة/g, 'ه')
+        .replace(/ى/g, 'ي')
+        .trim()
+        .toLowerCase();
+    }
+
     // Search and Filter Handlers
     function applyFilters() {
-      const query = document.getElementById('topicSearch').value.trim().toLowerCase();
+      const rawQuery = document.getElementById('topicSearch').value.trim();
+      const normQuery = normalizeArabic(rawQuery);
 
       let filtered = allTopics.filter(t => {
         // Level filter
@@ -743,17 +755,17 @@
         }
 
         // Query filter
-        if (!query) return true;
+        if (!normQuery) return true;
 
         // Check title
-        if (t.title.toLowerCase().includes(query)) return true;
+        if (normalizeArabic(t.title).includes(normQuery)) return true;
 
         // Check surah number or name
         if (t.references) {
           return t.references.some(r => {
-            if (r.surah_number.toString() === query) return true;
+            if (r.surah_number.toString() === rawQuery) return true;
             const name = surahNames[r.surah_number] || '';
-            if (name.includes(query)) return true;
+            if (normalizeArabic(name).includes(normQuery)) return true;
             return false;
           });
         }

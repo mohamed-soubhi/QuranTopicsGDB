@@ -120,8 +120,8 @@ def build_book_json_and_html():
             b_type = block.get("type")
             b_col = block.get("column", "right")
 
-            clean_head = " ".join(block.get("heading", "").split()).strip().rstrip(":").rstrip("：").strip()
-            clean_text = " ".join(block.get("text", "").split()).strip().rstrip(":").rstrip("：").strip()
+            clean_head = " ".join(block.get("heading", "").replace(r"\n", " ").replace("\n", " ").split()).strip().rstrip(":").rstrip("：").strip()
+            clean_text = " ".join(block.get("text", "").replace(r"\n", " ").replace("\n", " ").split()).strip().rstrip(":").rstrip("：").strip()
 
             if clean_head or clean_text:
                 current_topic_name = clean_head or clean_text
@@ -137,9 +137,9 @@ def build_book_json_and_html():
                 new_block["continuation_of"] = current_topic_name
 
             if "text" in block:
-                new_block["text"] = " ".join(block["text"].split())
+                new_block["text"] = " ".join(block["text"].replace(r"\n", " ").replace("\n", " ").split())
             if "heading" in block:
-                new_block["heading"] = " ".join(block["heading"].split())
+                new_block["heading"] = " ".join(block["heading"].replace(r"\n", " ").replace("\n", " ").split())
             if "inline_first_line" in block:
                 new_block["inline_first_line"] = block["inline_first_line"]
             if "lines" in block:
@@ -201,10 +201,24 @@ def build_book_json_and_html():
         return f"<{tag}{attrs}>{cleaned}</{tag}>"
 
     raw_sections = re.sub(r'<(h3)([^>]*)>(.*?)</\1>', clean_heading_html, raw_sections, flags=re.DOTALL)
+    raw_sections = re.sub(r'<(div)([^>]*class=["\'](?:sub|section)[^"\']*["\'][^>]*)>(.*?)</\1>', clean_heading_html, raw_sections, flags=re.DOTALL)
+
+    # Gather multi-line ranges separated by line-breaks (\n or <br>)
+    pattern_split_range = re.compile(
+        r'([٠-٩]+)\s*(?:[-–]\s*)?(?:<br\s*/?>|\n)\s*(?:[-–]\s*)?([٠-٩]+)'
+    )
+    def repl_gather(m):
+        full = m.group(0)
+        if '-' in full or '–' in full:
+            return f'{m.group(1)} - {m.group(2)}'
+        return full
+
+    raw_sections = pattern_split_range.sub(repl_gather, raw_sections)
 
     num_pattern = re.compile(r'([٠-٩]+)(?:\s*[-–]\s*([٠-٩]+))?')
     end_dash_pattern = re.compile(r'([٠-٩]+)\s*[-–]\s*$')
     start_num_pattern = re.compile(r'^\s*([٠-٩]+)')
+    start_dash_pattern = re.compile(r'^\s*[-–]\s*([٠-٩]+)')
 
     def tag_ayah_citations(html_text, is_english=False):
         pattern = re.compile(r'<span class=\"l\">(.*?)</span>', flags=re.DOTALL)
@@ -218,15 +232,23 @@ def build_book_json_and_html():
             if bdis:
                 current_surah = int(bdis[-1].group(1))
 
-            m_dash = end_dash_pattern.search(sp.rstrip())
-            if m_dash and idx + 1 < len(spans):
-                from_ayah = ar_to_int(m_dash.group(1))
+            if idx + 1 < len(spans):
                 next_sp = spans[idx + 1]
-                m_next = start_num_pattern.search(next_sp)
-                if m_next:
-                    to_ayah = ar_to_int(m_next.group(1))
-                    split_ranges[idx] = (from_ayah, to_ayah, current_surah, m_dash.group(0))
-                    split_ranges[idx + 1] = (from_ayah, to_ayah, current_surah, m_next.group(1))
+                m_end_dash = end_dash_pattern.search(sp.rstrip())
+                m_next_num = start_num_pattern.search(next_sp)
+                m_end_num = re.search(r'([٠-٩]+)\s*$', sp.rstrip())
+                m_next_dash = start_dash_pattern.match(next_sp)
+
+                if m_end_dash and m_next_num:
+                    from_ayah = ar_to_int(m_end_dash.group(1))
+                    to_ayah = ar_to_int(m_next_num.group(1))
+                    split_ranges[idx] = (from_ayah, to_ayah, current_surah, m_end_dash.group(0))
+                    split_ranges[idx + 1] = (from_ayah, to_ayah, current_surah, m_next_num.group(1))
+                elif m_end_num and m_next_dash:
+                    from_ayah = ar_to_int(m_end_num.group(1))
+                    to_ayah = ar_to_int(m_next_dash.group(1))
+                    split_ranges[idx] = (from_ayah, to_ayah, current_surah, m_end_num.group(1))
+                    split_ranges[idx + 1] = (from_ayah, to_ayah, current_surah, m_next_dash.group(0))
 
         current_surah = None
         processed_spans = []
@@ -253,10 +275,10 @@ def build_book_json_and_html():
                     prefix_replaced = ""
                     if is_start_of_span and idx in split_ranges and (idx - 1) in split_ranges:
                         from_ayah, to_ayah, s_num, raw_to = split_ranges[idx]
-                        m_lead = start_num_pattern.search(text_to_process)
-                        if m_lead and m_lead.group(1) == raw_to:
+                        m_lead = re.match(r'^\s*[-–]?\s*([٠-٩]+)', text_to_process)
+                        if m_lead and (m_lead.group(1) == raw_to or m_lead.group(0).strip() == raw_to.strip()):
                             title_text = "عرض نص الآيات" if not is_english else "View Ayah Text"
-                            prefix_replaced = f'<span class="a-ref" data-s="{s_num}" data-from="{from_ayah}" data-to="{to_ayah}" title="{title_text}">{raw_to}</span>'
+                            prefix_replaced = f'<span class="a-ref" data-s="{s_num}" data-from="{from_ayah}" data-to="{to_ayah}" title="{title_text}">{m_lead.group(0).strip()}</span>'
                             text_to_process = text_to_process[m_lead.end():]
 
                     suffix_replaced = ""
@@ -273,7 +295,7 @@ def build_book_json_and_html():
                         from_num = ar_to_int(m.group(1))
                         to_num = ar_to_int(m.group(2)) if m.group(2) else from_num
                         raw_txt = m.group(0)
-                        title_text = "عرض نص الآية" if not is_english else "View Ayah Text"
+                        title_text = ("عرض نص الآيات" if from_num != to_num else "عرض نص الآية") if not is_english else ("View Ayahs Text" if from_num != to_num else "View Ayah Text")
                         return f'<span class="a-ref" data-s="{current_surah}" data-from="{from_num}" data-to="{to_num}" title="{title_text}">{raw_txt}</span>'
 
                     annotated.append(prefix_replaced + num_pattern.sub(repl, text_to_process) + suffix_replaced)
@@ -309,6 +331,7 @@ def build_book_json_and_html():
                 break
             if not sample_title and b.get("heading"):
                 sample_title = b.get("heading")
+        sample_title = " ".join(sample_title.replace(r"\n", " ").replace("<br>", " ").replace("\n", " ").split())
         sample_title_clean = (" - " + sample_title[:24]) if sample_title else ""
         page_options_ar.append(f'<option value="{pdf_p}">صفحة {pr_p} (PDF {pdf_p}){sample_title_clean}</option>')
         page_options_en.append(f'<option value="{pdf_p}">Page {pr_p} (PDF {pdf_p}){sample_title_clean}</option>')
@@ -503,11 +526,70 @@ def build_book_json_and_html():
       transition: all 0.15s ease;
       border-radius: 2px;
       padding: 0 1px;
+      white-space: nowrap;
     }
     .a-ref:hover, .a-ref.active-ayah {
       background-color: #d1fae5;
       color: #065f46;
       border-bottom: 1px solid #059669;
+    }
+
+    /* Quick Search Bar & Matches */
+    .search-box {
+      display: inline-flex;
+      align-items: center;
+      background: #0f172a;
+      border: 1px solid #475569;
+      border-radius: 6px;
+      padding: 0 4px;
+      gap: 2px;
+    }
+    .search-box:focus-within {
+      border-color: #10b981;
+      box-shadow: 0 0 0 1px #10b981;
+    }
+    .search-box .nav-input {
+      border: none !important;
+      background: transparent !important;
+      padding: 6px 8px !important;
+      outline: none !important;
+      width: 170px;
+    }
+    .search-counter {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      padding: 0 6px;
+      white-space: nowrap;
+      font-family: 'Tajawal', -apple-system, sans-serif;
+    }
+    .nav-btn-icon {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .nav-btn-icon:hover {
+      background: #334155;
+      color: #fff;
+    }
+    .search-hit {
+      background-color: #fef08a !important;
+      color: #854d0e !important;
+      border-radius: 3px;
+      box-shadow: 0 0 0 2px #fef08a;
+      transition: background-color 0.2s;
+    }
+    .search-hit-active {
+      background-color: #86efac !important;
+      color: #064e3b !important;
+      box-shadow: 0 0 0 3px #10b981, 0 2px 8px rgba(16, 185, 129, 0.4) !important;
     }
 
     /* Floating Popover Card */
@@ -831,16 +913,128 @@ def build_book_json_and_html():
       }}
     }}
 
+    let searchMatches = [];
+    let currentMatchIdx = -1;
+
+    function normalizeText(str) {{
+      if (!str) return '';
+      return str
+        .replace(/[\\u064B-\\u065F\\u0670]/g, '')
+        .replace(/[أإآٱ]/g, 'ا')
+        .replace(/ة/g, 'ه')
+        .replace(/ى/g, 'ي')
+        .replace(/[\\s\\-_ـ]+/g, ' ')
+        .trim()
+        .toLowerCase();
+    }}
+
+    function clearSearch() {{
+      const input = document.getElementById('filterInput');
+      if (input) input.value = '';
+      const counter = document.getElementById('searchCounter');
+      if (counter) counter.innerText = '';
+      clearSearchHighlights();
+      searchMatches = [];
+      currentMatchIdx = -1;
+    }}
+
+    function clearSearchHighlights() {{
+      document.querySelectorAll('.search-hit, .search-hit-active').forEach(el => {{
+        el.classList.remove('search-hit', 'search-hit-active');
+      }});
+    }}
+
     function filterInBook() {{
-      const query = document.getElementById('filterInput').value.trim();
-      if (!query) return;
-      for (let i = 0; i < sections.length; i++) {{
-        if (sections[i].innerText.includes(query)) {{
-          currentIdx = i;
-          pageSelect.value = sections[i].getAttribute('data-page');
-          jumpToSelectedPage();
-          break;
+      const input = document.getElementById('filterInput');
+      const counter = document.getElementById('searchCounter');
+      const rawQuery = input ? input.value : '';
+      const query = normalizeText(rawQuery);
+
+      clearSearchHighlights();
+      searchMatches = [];
+      currentMatchIdx = -1;
+
+      if (!query) {{
+        if (counter) counter.innerText = '';
+        return;
+      }}
+
+      const candidates = document.querySelectorAll('section[data-page] h3, section[data-page] .sub, section[data-page] .section, section[data-page] .title, section[data-page] .c-badge, section[data-page] .s, section[data-page] .a-ref');
+
+      candidates.forEach(el => {{
+        const text = normalizeText(el.innerText);
+        const titleAttr = normalizeText(el.getAttribute('title') || '');
+        if (text.includes(query) || titleAttr.includes(query)) {{
+          searchMatches.push(el);
+          el.classList.add('search-hit');
         }}
+      }});
+
+      if (searchMatches.length > 0) {{
+        currentMatchIdx = 0;
+        updateMatchHighlight(true);
+      }} else {{
+        if (counter) counter.innerText = (document.documentElement.lang === 'ar') ? 'لا نتائج' : 'No results';
+      }}
+    }}
+
+    function updateMatchHighlight(shouldScroll) {{
+      const counter = document.getElementById('searchCounter');
+      document.querySelectorAll('.search-hit-active').forEach(el => {{
+        el.classList.remove('search-hit-active');
+      }});
+
+      if (currentMatchIdx >= 0 && currentMatchIdx < searchMatches.length) {{
+        const activeEl = searchMatches[currentMatchIdx];
+        activeEl.classList.add('search-hit-active');
+
+        if (counter) {{
+          counter.innerText = `${{currentMatchIdx + 1}} / ${{searchMatches.length}}`;
+        }}
+
+        if (shouldScroll) {{
+          const sec = activeEl.closest('section[data-page]');
+          if (sec) {{
+            const pageNum = sec.getAttribute('data-page');
+            if (isSingleMode) {{
+              sections.forEach(s => s.classList.remove('active-single'));
+              sec.classList.add('active-single');
+              pageSelect.value = pageNum;
+              currentIdx = sections.indexOf(sec);
+            }} else {{
+              pageSelect.value = pageNum;
+              currentIdx = sections.indexOf(sec);
+            }}
+          }}
+          activeEl.scrollIntoView({{ behavior: 'smooth', block: 'center' }});
+        }}
+      }} else if (counter) {{
+        counter.innerText = '';
+      }}
+    }}
+
+    function nextMatch() {{
+      if (searchMatches.length === 0) return;
+      currentMatchIdx = (currentMatchIdx + 1) % searchMatches.length;
+      updateMatchHighlight(true);
+    }}
+
+    function prevMatch() {{
+      if (searchMatches.length === 0) return;
+      currentMatchIdx = (currentMatchIdx - 1 + searchMatches.length) % searchMatches.length;
+      updateMatchHighlight(true);
+    }}
+
+    function handleSearchKey(e) {{
+      if (e.key === 'Enter') {{
+        e.preventDefault();
+        if (e.shiftKey) {{
+          prevMatch();
+        }} else {{
+          nextMatch();
+        }}
+      }} else if (e.key === 'Escape') {{
+        clearSearch();
       }}
     }}
     '''
@@ -1042,16 +1236,128 @@ def build_book_json_and_html():
       }}
     }}
 
+    let searchMatches = [];
+    let currentMatchIdx = -1;
+
+    function normalizeText(str) {{
+      if (!str) return '';
+      return str
+        .replace(/[\\u064B-\\u065F\\u0670]/g, '')
+        .replace(/[أإآٱ]/g, 'ا')
+        .replace(/ة/g, 'ه')
+        .replace(/ى/g, 'ي')
+        .replace(/[\\s\\-_ـ]+/g, ' ')
+        .trim()
+        .toLowerCase();
+    }}
+
+    function clearSearch() {{
+      const input = document.getElementById('filterInput');
+      if (input) input.value = '';
+      const counter = document.getElementById('searchCounter');
+      if (counter) counter.innerText = '';
+      clearSearchHighlights();
+      searchMatches = [];
+      currentMatchIdx = -1;
+    }}
+
+    function clearSearchHighlights() {{
+      document.querySelectorAll('.search-hit, .search-hit-active').forEach(el => {{
+        el.classList.remove('search-hit', 'search-hit-active');
+      }});
+    }}
+
     function filterInBook() {{
-      const query = document.getElementById('filterInput').value.trim();
-      if (!query) return;
-      for (let i = 0; i < sections.length; i++) {{
-        if (sections[i].innerText.includes(query)) {{
-          currentIdx = i;
-          pageSelect.value = sections[i].getAttribute('data-page');
-          jumpToSelectedPage();
-          break;
+      const input = document.getElementById('filterInput');
+      const counter = document.getElementById('searchCounter');
+      const rawQuery = input ? input.value : '';
+      const query = normalizeText(rawQuery);
+
+      clearSearchHighlights();
+      searchMatches = [];
+      currentMatchIdx = -1;
+
+      if (!query) {{
+        if (counter) counter.innerText = '';
+        return;
+      }}
+
+      const candidates = document.querySelectorAll('section[data-page] h3, section[data-page] .sub, section[data-page] .section, section[data-page] .title, section[data-page] .c-badge, section[data-page] .s, section[data-page] .a-ref');
+
+      candidates.forEach(el => {{
+        const text = normalizeText(el.innerText);
+        const titleAttr = normalizeText(el.getAttribute('title') || '');
+        if (text.includes(query) || titleAttr.includes(query)) {{
+          searchMatches.push(el);
+          el.classList.add('search-hit');
         }}
+      }});
+
+      if (searchMatches.length > 0) {{
+        currentMatchIdx = 0;
+        updateMatchHighlight(true);
+      }} else {{
+        if (counter) counter.innerText = (document.documentElement.lang === 'ar') ? 'لا نتائج' : 'No results';
+      }}
+    }}
+
+    function updateMatchHighlight(shouldScroll) {{
+      const counter = document.getElementById('searchCounter');
+      document.querySelectorAll('.search-hit-active').forEach(el => {{
+        el.classList.remove('search-hit-active');
+      }});
+
+      if (currentMatchIdx >= 0 && currentMatchIdx < searchMatches.length) {{
+        const activeEl = searchMatches[currentMatchIdx];
+        activeEl.classList.add('search-hit-active');
+
+        if (counter) {{
+          counter.innerText = `${{currentMatchIdx + 1}} / ${{searchMatches.length}}`;
+        }}
+
+        if (shouldScroll) {{
+          const sec = activeEl.closest('section[data-page]');
+          if (sec) {{
+            const pageNum = sec.getAttribute('data-page');
+            if (isSingleMode) {{
+              sections.forEach(s => s.classList.remove('active-single'));
+              sec.classList.add('active-single');
+              pageSelect.value = pageNum;
+              currentIdx = sections.indexOf(sec);
+            }} else {{
+              pageSelect.value = pageNum;
+              currentIdx = sections.indexOf(sec);
+            }}
+          }}
+          activeEl.scrollIntoView({{ behavior: 'smooth', block: 'center' }});
+        }}
+      }} else if (counter) {{
+        counter.innerText = '';
+      }}
+    }}
+
+    function nextMatch() {{
+      if (searchMatches.length === 0) return;
+      currentMatchIdx = (currentMatchIdx + 1) % searchMatches.length;
+      updateMatchHighlight(true);
+    }}
+
+    function prevMatch() {{
+      if (searchMatches.length === 0) return;
+      currentMatchIdx = (currentMatchIdx - 1 + searchMatches.length) % searchMatches.length;
+      updateMatchHighlight(true);
+    }}
+
+    function handleSearchKey(e) {{
+      if (e.key === 'Enter') {{
+        e.preventDefault();
+        if (e.shiftKey) {{
+          prevMatch();
+        }} else {{
+          nextMatch();
+        }}
+      }} else if (e.key === 'Escape') {{
+        clearSearch();
       }}
     }}
     '''
@@ -1082,7 +1388,13 @@ def build_book_json_and_html():
         {options_html_ar}
       </select>
       <button class="nav-btn" onclick="nextPage()" title="الصفحة التالية">التالي ▶</button>
-      <input type="text" id="filterInput" class="nav-input" placeholder="بحث سريع في الصفحة..." oninput="filterInBook()">
+      <div class="search-box">
+        <input type="text" id="filterInput" class="nav-input" placeholder="بحث سريع في الكتاب..." oninput="filterInBook()" onkeydown="handleSearchKey(event)">
+        <span id="searchCounter" class="search-counter"></span>
+        <button class="nav-btn-icon" onclick="prevMatch()" title="المطابقة السابقة (Shift+Enter)">▲</button>
+        <button class="nav-btn-icon" onclick="nextMatch()" title="المطابقة التالية (Enter)">▼</button>
+        <button class="nav-btn-icon" onclick="clearSearch()" title="مسح البحث">✕</button>
+      </div>
       <button class="nav-btn" id="modeBtn" onclick="toggleViewMode('📖 عرض صفحة مفردة', '📜 عرض متتابع لجميع الصفحات')">📖 عرض صفحة مفردة</button>
     </div>
 
@@ -1163,7 +1475,13 @@ def build_book_json_and_html():
         {options_html_en}
       </select>
       <button class="nav-btn" onclick="nextPage()" title="Next Page">Next ▶</button>
-      <input type="text" id="filterInput" class="nav-input" placeholder="Quick search in page..." oninput="filterInBook()">
+      <div class="search-box">
+        <input type="text" id="filterInput" class="nav-input" placeholder="Quick search in book..." oninput="filterInBook()" onkeydown="handleSearchKey(event)">
+        <span id="searchCounter" class="search-counter"></span>
+        <button class="nav-btn-icon" onclick="prevMatch()" title="Previous Match (Shift+Enter)">▲</button>
+        <button class="nav-btn-icon" onclick="nextMatch()" title="Next Match (Enter)">▼</button>
+        <button class="nav-btn-icon" onclick="clearSearch()" title="Clear search">✕</button>
+      </div>
       <button class="nav-btn" id="modeBtn" onclick="toggleViewMode('📖 Single Page View', '📜 Continuous Scroll View')">📖 Single Page View</button>
     </div>
 

@@ -52004,7 +52004,7 @@
         {
           "type": "section",
           "column": "left",
-          "text": "رابعاً :الكتب السماوية\\nالأخرى"
+          "text": "رابعاً :الكتب السماوية الأخرى"
         },
         {
           "type": "entry",
@@ -74174,12 +74174,12 @@
         {
           "type": "subsection",
           "column": "right",
-          "text": "(١)- التكليف بالعمل على قدر\\nالإستطاعة :"
+          "text": "(١)- التكليف بالعمل على قدر الإستطاعة :"
         },
         {
           "type": "entry",
           "column": "right",
-          "continuation_of": "(١)- التكليف بالعمل على قدر\\nالإستطاعة",
+          "continuation_of": "(١)- التكليف بالعمل على قدر الإستطاعة",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -81549,7 +81549,7 @@
         {
           "type": "title",
           "column": "right",
-          "text": "الإنسان والعلاقات\\nالأخلاقية"
+          "text": "الإنسان والعلاقات الأخلاقية"
         },
         {
           "type": "section",
@@ -90220,7 +90220,7 @@
         {
           "type": "title",
           "column": "right",
-          "text": "الإنسان والعلاقات\\nالإجتماعية"
+          "text": "الإنسان والعلاقات الإجتماعية"
         },
         {
           "type": "subsection",
@@ -97512,7 +97512,7 @@
         {
           "type": "title",
           "column": "right",
-          "text": "تنظيم العلاقات\\nالمالية"
+          "text": "تنظيم العلاقات المالية"
         },
         {
           "type": "entry",
@@ -100601,7 +100601,7 @@
         {
           "type": "title",
           "column": "left",
-          "text": "التجارة والزراعة\\nوالصناعة"
+          "text": "التجارة والزراعة والصناعة"
         },
         {
           "type": "subsection",
@@ -103571,7 +103571,7 @@
         {
           "type": "title",
           "column": "right",
-          "text": "العلاقات السياسية\\nوالعامة"
+          "text": "العلاقات السياسية والعامة"
         },
         {
           "type": "entry",
@@ -104326,12 +104326,12 @@
         {
           "type": "subsection",
           "column": "right",
-          "text": "(٤)- الحث على التفكر واستخدام\\nالعقل:"
+          "text": "(٤)- الحث على التفكر واستخدام العقل:"
         },
         {
           "type": "entry",
           "column": "right",
-          "continuation_of": "(٤)- الحث على التفكر واستخدام\\nالعقل",
+          "continuation_of": "(٤)- الحث على التفكر واستخدام العقل",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -104381,7 +104381,7 @@
         {
           "type": "entry",
           "column": "left",
-          "continuation_of": "(٤)- الحث على التفكر واستخدام\\nالعقل",
+          "continuation_of": "(٤)- الحث على التفكر واستخدام العقل",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -104566,12 +104566,12 @@
         {
           "type": "subsection",
           "column": "left",
-          "text": "(٥)- الحث على نشر العلم وعدم\\nكتمانه :"
+          "text": "(٥)- الحث على نشر العلم وعدم كتمانه :"
         },
         {
           "type": "entry",
           "column": "left",
-          "continuation_of": "(٥)- الحث على نشر العلم وعدم\\nكتمانه",
+          "continuation_of": "(٥)- الحث على نشر العلم وعدم كتمانه",
           "heading": "",
           "inline_first_line": false,
           "lines": [
@@ -104640,7 +104640,7 @@
         {
           "type": "subsection",
           "column": "left",
-          "text": "(٦)- الحقائق العلمية والإشارة إلى\\nوقائع أيدتها الإكتشافات العلمية :"
+          "text": "(٦)- الحقائق العلمية والإشارة إلى وقائع أيدتها الإكتشافات العلمية :"
         },
         {
           "type": "entry",
