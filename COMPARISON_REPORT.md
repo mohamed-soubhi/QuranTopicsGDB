@@ -34,7 +34,7 @@ Three distinct extraction methodologies were evaluated on **Pages 2 through 49**
 
 ### C. Canonical Verification & Physical Book Printing Errors
 Both our validation engine and Claude's validator tested every citation against canonical Hafs/Kufi ayah counts (6,236 Ayahs).
-- **Surah 77:78 on Page 25:** Claude detected an invalid citation on page 25 under `أهواله`: Surah 77, ayah 78. Surah Al-Mursalat has only 50 ayahs! Inspection of the physical PDF page 25 confirms that the **original physical print actually contains this misprint ('78')**. Claude noted this as confirmed as printed.
+- **Surah 77:78 on PDF Page 25 (Printed Page 24):** Claude detected an invalid citation on PDF page 25 (which corresponds to printed page 24 in the book and HTML pages) under `أهواله`: Surah 77, ayah 78. Surah Al-Mursalat has only 50 ayahs! Inspection of the physical PDF page 25 confirms that the **original physical print actually contains this misprint ('78')**. Claude noted this as confirmed as printed.
 - **Surah 12 on Page 47:** Under entry `يد`, ayahs were printed out of order in the original source book (`50 then 31`). Claude identified and flagged this anomaly accurately.
 
 ---

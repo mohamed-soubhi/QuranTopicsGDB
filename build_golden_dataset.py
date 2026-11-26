@@ -70,7 +70,10 @@ def build_golden():
 
     golden_json["metadata"]["source"] = "فهرس مواضيع القرآن الكريم (Pages 2-49)"
     golden_json["metadata"]["confidence"] = "Cross-verified multi-model consensus (Claude + DeepSeek + Gemini)"
-    golden_json["metadata"]["confirmed_source_misprints"] = claude_data.get("confirmed_as_printed", [])
+    golden_json["metadata"]["confirmed_source_misprints"] = [
+        "pdf page 25 (printed page 24 in book/html), surah 77: ayah 78 is printed in the source but surah 77 has only 50 ayahs",
+        "pdf page 47 (printed page 46 in book/html), entry يد, surah 12: ayahs are printed in the order 50 then 31"
+    ]
 
     with open("data/quran_topics.json", "w", encoding="utf-8") as f:
         json.dump(golden_json, f, ensure_ascii=False, indent=2)

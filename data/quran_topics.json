@@ -6,8 +6,8 @@
     "source": "فهرس مواضيع القرآن الكريم (Pages 2-49)",
     "confidence": "Cross-verified multi-model consensus (Claude + DeepSeek + Gemini)",
     "confirmed_source_misprints": [
-      "pdf page 25, sura 77: verse 78 is printed in the source but sura 77 has only 50 verses",
-      "pdf page 47, entry يد, sura 12: verses are printed in the order 50 then 31"
+      "pdf page 25 (printed page 24 in book/html), surah 77: ayah 78 is printed in the source but surah 77 has only 50 ayahs",
+      "pdf page 47 (printed page 46 in book/html), entry يد, surah 12: ayahs are printed in the order 50 then 31"
     ]
   },
   "topics": [

@@ -99,7 +99,10 @@ def build_book_json_and_html():
         "pages_range": {"pdf_from": 2, "pdf_to": 49, "printed_from": "١", "printed_to": "٤٨"},
         "pages_count": len(claude_data.get("pages", [])),
         "source_pages": claude_data.get("source_pages", []),
-        "confirmed_source_misprints": claude_data.get("confirmed_as_printed", []),
+        "confirmed_source_misprints": [
+            "pdf page 25 (printed page 24 in book/html), surah 77: ayah 78 is printed in the source but surah 77 has only 50 ayahs",
+            "pdf page 47 (printed page 46 in book/html), entry يد, surah 12: ayahs are printed in the order 50 then 31"
+        ],
         "pages": []
     }
 
@@ -611,10 +614,10 @@ def build_book_json_and_html():
       // Load text
       const cache = await loadQuranText();
 
-      // Check misprint anomaly (e.g. Page 25: Surah 77: 78)
+      // Check misprint anomaly (e.g. PDF Page 25 / Printed Page 24: Surah 77: 78)
       let alertMsg = '';
       if (maxA > 0 && from > maxA) {{
-        alertMsg = `<div class="popover-alert">⚠️ <strong>تنبيه توثيقي:</strong> الرقم (${{from}}) خطأ مطبعي في أصل الكتاب الورقي، وسورة ${{sName}} تنتهي عند الآية ${{maxA}}.</div>`;
+        alertMsg = `<div class="popover-alert">⚠️ <strong>تنبيه توثيقي:</strong> الرقم (${{from}}) خطأ مطبعي في أصل الكتاب الورقي (صفحة PDF رقم ٢٥ / المقابلة لصفحة الكتاب المطبوعة ٢٤)، وسورة ${{sName}} تنتهي عند الآية ${{maxA}}.</div>`;
       }}
 
       if (!cache) {{
@@ -824,7 +827,7 @@ def build_book_json_and_html():
 
       let alertMsg = '';
       if (maxA > 0 && from > maxA) {{
-        alertMsg = `<div class="popover-alert">⚠️ <strong>Editorial Note:</strong> Ayah ${{from}} is a printing error in the source book; Surah ${{sName}} has only ${{maxA}} ayahs.</div>`;
+        alertMsg = `<div class="popover-alert">⚠️ <strong>Editorial Note:</strong> Ayah ${{from}} is a printing error in the source book (PDF page 25, matching printed page 24 in the book and HTML); Surah ${{sName}} has only ${{maxA}} ayahs.</div>`;
       }}
 
       if (!cache) {{

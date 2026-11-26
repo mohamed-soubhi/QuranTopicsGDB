@@ -2139,10 +2139,10 @@
       // Load text
       const cache = await loadQuranText();
 
-      // Check misprint anomaly (e.g. Page 25: Surah 77: 78)
+      // Check misprint anomaly (e.g. PDF Page 25 / Printed Page 24: Surah 77: 78)
       let alertMsg = '';
       if (maxA > 0 && from > maxA) {
-        alertMsg = `<div class="popover-alert">⚠️ <strong>تنبيه توثيقي:</strong> الرقم (${from}) خطأ مطبعي في أصل الكتاب الورقي، وسورة ${sName} تنتهي عند الآية ${maxA}.</div>`;
+        alertMsg = `<div class="popover-alert">⚠️ <strong>تنبيه توثيقي:</strong> الرقم (${from}) خطأ مطبعي في أصل الكتاب الورقي (صفحة PDF رقم ٢٥ / المقابلة لصفحة الكتاب المطبوعة ٢٤)، وسورة ${sName} تنتهي عند الآية ${maxA}.</div>`;
       }
 
       if (!cache) {

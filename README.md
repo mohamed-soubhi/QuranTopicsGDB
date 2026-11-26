@@ -25,7 +25,7 @@ Extraction, structured formatting, multi-model comparative audit, and canonical 
   - Page-by-page book hierarchy dataset: [`data/quran_topics_book.json`](data/quran_topics_book.json).
 - **Comprehensive Index:** **1,292 topic entries** and **10,767 ayah citations**.
 - **Canonical Quranic Verification:** **99.991% validity** tested against Hafs 'an 'Asim (Kufi: 6,236 Ayahs).
-- **Physical Misprints Discovered:** Identified and documented authentic printing errors in the physical source book (e.g., Page 25 Surah 77:78 misprint).
+- **Physical Misprints Discovered:** Identified and documented authentic printing errors in the physical source book (e.g., PDF Page 25 / Printed Page 24 Surah 77:78 misprint under topic "أهواله").
 - **Multi-Model Comparative Audit:** Cross-evaluation across **Claude**, **Gemini**, and **Ollama (DeepSeek)**, detailed in [`COMPARISON_REPORT.md`](COMPARISON_REPORT.md).
 - **Marqoom Standards Compliance:** Full alignment with Marqoom terminology (`surah_number`, `ayah_number`, `riwayah: hafs_an_asim`), validated by `quranic-data` and `quranic-terminology` pre-commit hooks (0 errors, 0 warnings).
 
