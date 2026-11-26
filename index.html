@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>فهرس مواضيع القرآن الكريم | QuranTopicsGDB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0d9488;
+      --primary-dark: #0f766e;
+      --primary-darker: #115e59;
+      --primary-light: #ccfbf1;
+      --accent: #d97706;
+      --surface: #ffffff;
+      --surface-variant: #f8fafc;
+      --bg: #f1f5f9;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #16a34a;
+      --font-ui: 'Cairo', sans-serif;
+      --font-quran: 'Amiri', serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-ui);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-dark) 50%, var(--primary) 100%);
+      color: white;
+      padding: 4rem 1rem 3.5rem;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 10px 25px -5px rgba(15, 118, 110, 0.3);
+    }
+
+    .hero-title {
+      font-size: 2.75rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      font-family: var(--font-quran);
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      opacity: 0.95;
+      max-width: 800px;
+      margin: 0 auto 1.75rem;
+      font-weight: 600;
+    }
+
+    .hero-badges {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .hero-badge {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-accent {
+      background-color: var(--accent);
+      color: white;
+    }
+    .btn-accent:hover {
+      background-color: #b45309;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Stats Grid */
+    .stats-section {
+      margin-top: -2.5rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+
+    .stat-card .value {
+      font-size: 2.25rem;
+      font-weight: 900;
+      color: var(--primary-dark);
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+    }
+
+    .stat-card .label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .stat-card .desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* Search & Explorer */
+    .explorer-section {
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      margin-bottom: 3rem;
+    }
+
+    .explorer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 1rem;
+    }
+
+    .explorer-header h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .search-box-wrapper {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.875rem 1.25rem;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      font-family: var(--font-ui);
+      font-size: 1.05rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+    }
+
+    .filters-bar {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      align-items: center;
+    }
+
+    .filter-btn {
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: var(--surface-variant);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .results-info {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    /* Topic Cards */
+    .topics-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-height: 750px;
+      overflow-y: auto;
+      padding-left: 0.5rem;
+    }
+
+    .topic-card {
+      background: var(--surface-variant);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .topic-card:hover {
+      border-color: var(--primary);
+      transform: translateX(-2px);
+    }
+
+    .topic-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .topic-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--primary-darker);
+    }
+
+    .topic-level-badge {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 700;
+      background: #e2e8f0;
+      color: #475569;
+    }
+
+    .topic-level-major { background: #dcfce7; color: #166534; }
+    .topic-level-section { background: #fef3c7; color: #92400e; }
+    .topic-level-subtopic { background: #ccfbf1; color: #0f766e; }
+
+    .references-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .ref-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.35rem 0.65rem;
+      font-size: 0.85rem;
+    }
+
+    .ref-surah {
+      font-weight: 800;
+      color: #b91c1c; /* Red as in original book */
+    }
+
+    .ref-ayahs {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .page-tag {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      display: block;
+    }
+
+    /* Information Sections */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 1.75rem;
+    }
+
+    .info-card h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-card p, .info-card li {
+      font-size: 0.95rem;
+      color: #334155;
+      line-height: 1.7;
+    }
+
+    .info-card ul {
+      padding-right: 1.25rem;
+      margin-top: 0.75rem;
+    }
+
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 2.5rem 1rem;
+      text-align: center;
+      margin-top: auto;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: #2dd4bf;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <h1 class="hero-title">فهرس مواضيع القرآن الكريم</h1>
+      <p class="hero-subtitle">
+        القاعدة المعيارية الرقمية الشاملة لتبويب القرآن الكريم موضوعياً عبر سور وآيات المصحف الشريف
+      </p>
+      <div class="hero-badges">
+        <span class="hero-badge">المصدر: الصفحات ٢ إلى ٤٩ من المطبوعة</span>
+        <span class="hero-badge">الرواية: حفص عن عاصم (العد الكوفي: ٦٢٣٦ آية)</span>
+        <span class="hero-badge">معايير مرقوم: quranic-data v0.5.0</span>
+        <span class="hero-badge">الإصدار: v1.0.0</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#explorer" class="btn btn-accent">استكشف الفهرس التفاعلي</a>
+        <a href="report.html" class="btn btn-outline">تقرير التدقيق المقارن (HTML)</a>
+        <a href="quran_topics_index.md" class="btn btn-outline">الفهرس بصيغة Markdown</a>
+        <a href="https://github.com/mohamed-soubhi/QuranTopicsGDB" class="btn btn-outline" target="_blank">المستودع على GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Statistics Overview -->
+  <div class="container stats-section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="value">١١٤ / ١١٤</div>
+        <div class="label">تغطية سور القرآن</div>
+        <div class="desc">١٠٠٪ من سور القرآن الكريم</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">١,٢٩٢</div>
+        <div class="label">إجمالي التبويبات والمواضيع</div>
+        <div class="desc">موضوعات رئيسية وتفصيلية</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">١٠,٧٦٧</div>
+        <div class="label">الاستشهادات القرآنية</div>
+        <div class="desc">آيات ونطاقات متسلسلة</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">٩٩.٩٩١٪</div>
+        <div class="label">الدقة والمطابقة الشرعية</div>
+        <div class="desc">مطابقة للعد الكوفي المعتمد</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Explorer Section -->
+  <main class="container" id="explorer">
+    <section class="explorer-section">
+      <div class="explorer-header">
+        <h2>مستعرض الفهرس الموضوعي التفاعلي</h2>
+        <div id="resultsCount" class="results-info">جاري تحميل البيانات...</div>
+      </div>
+
+      <!-- Search Input -->
+      <div class="search-box-wrapper">
+        <input 
+          type="text" 
+          id="topicSearch" 
+          class="search-input" 
+          placeholder="ابحث في المواضيع أو برقم السورة (مثال: التوحيد، الصلاة، إبراهيم، سورة 2)..."
+          autocomplete="off"
+        >
+      </div>
+
+      <!-- Filters -->
+      <div class="filters-bar">
+        <span style="font-weight: 700; font-size: 0.9rem;">تصفية حسب المستوى:</span>
+        <button class="filter-btn active" data-filter="all">الكل</button>
+        <button class="filter-btn" data-filter="major_topic">الأبواب الرئيسية</button>
+        <button class="filter-btn" data-filter="section">الأقسام</button>
+        <button class="filter-btn" data-filter="topic">المواضيع</button>
+        <button class="filter-btn" data-filter="subtopic">المواضيع الفرعية</button>
+      </div>
+
+      <!-- Dynamic Topic List -->
+      <div class="topics-list" id="topicsContainer">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </section>
+
+    <!-- Project Info Cards -->
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>منهجية الرقمنة والتحقق المعياري</h3>
+        <p>
+          تم استخراج وفحص بيانات كتاب المصحف المفهرس موضوعياً عبر مراحل متطورة تضمنت:
+        </p>
+        <ul>
+          <li><strong>فصل الأعمدة بدقة:</strong> اتباع نظام القراءة العربي (العمود الأيمن أولاً ثم الأيسر) لمنع اختلاط السطور.</li>
+          <li><strong>تمييز ألوان الأرقام:</strong> تحديد أرقام السور باللون الأحمر، وأرقام الآيات ونطاقاتها بالحبر الأسود.</li>
+          <li><strong>المطابقة الشرعية الكوفية:</strong> فحص كل استشهاد وتطابقه مع أقصى عدد آيات السورة برواية حفص عن عاصم.</li>
+          <li><strong>معايير مرقوم:</strong> اعتماد أسماء الحقول والمصطلحات الموحدة (<code>surah_number</code>, <code>ayah_number</code>).</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h3>المقارنة الثلاثية واكتشاف الأخطاء المطبعية</h3>
+        <p>
+          تمت مضاهاة ثلاثة نماذج استخراج مستقلة (Claude vs Gemini vs DeepSeek) للوصول لأقصى درجات الثقة العلمية:
+        </p>
+        <ul>
+          <li><strong>تفوق كلود (Claude):</strong> حقق دقة بلغت ٩٩.٩٩٢٪ وعزل الأعمدة والأرقام المحصورة بنجاح فائق.</li>
+          <li><strong>اكتشاف خطأ مطبعي أصيل:</strong> تم رصد خطأ في طبعة الكتاب الأصلية بصفحة ٢٥ (سورة المرسلات ٧٧ آية ٧٨ مع أن السورة تنتهي عند الآية ٥٠) وتم توثيقه أمانةً وتدقيقاً.</li>
+          <li><strong>الملف الذهبي:</strong> تم توحيد النتائج في ملف <code>data/quran_topics.json</code> المجاز بالكامل.</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>قاعدة بيانات فهرس مواضيع القرآن الكريم (QuranTopicsGDB) &copy; 2026</p>
+      <p style="margin-top: 0.5rem; font-size: 0.85rem;">
+        مطابقة لرواية حفص عن عاصم (العد الكوفي) &bull; 
+        مرخصة ومطابقة لمعايير <a href="https://github.com/marqoom-specs/quranic-terminology-lint" target="_blank">مرقوم (Marqoom)</a> &bull;
+        المستودع: <a href="https://github.com/mohamed-soubhi/QuranTopicsGDB" target="_blank">mohamed-soubhi/QuranTopicsGDB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Search & Render Script -->
+  <script>
+    let allTopics = [];
+    let currentFilter = 'all';
+
+    const surahNames = {
+      1: "الفاتحة", 2: "البقرة", 3: "آل عمران", 4: "النساء", 5: "المائدة", 6: "الأنعام",
+      7: "الأعراف", 8: "الأنفال", 9: "التوبة", 10: "يونس", 11: "هود", 12: "يوسف",
+      13: "الرعد", 14: "إبراهيم", 15: "الحجر", 16: "النحل", 17: "الإسراء", 18: "الكهف",
+      19: "مريم", 20: "طه", 21: "الأنبياء", 22: "الحج", 23: "المؤمنون", 24: "النور",
+      25: "الفرقان", 26: "الشعراء", 27: "النمل", 28: "القصص", 29: "العنكبوت", 30: "الروم",
+      31: "لقمان", 32: "السجدة", 33: "الأحزاب", 34: "سبأ", 35: "فاطر", 36: "يس",
+      37: "الصافات", 38: "ص", 39: "الزمر", 40: "غافر", 41: "فصلت", 42: "الشورى",
+      43: "الزخرف", 44: "الدخان", 45: "الجاثية", 46: "الأحقاف", 47: "محمد", 48: "الفتح",
+      49: "الحجرات", 50: "ق", 51: "الذاريات", 52: "الطور", 53: "النجم", 54: "القمر",
+      55: "الرحمن", 56: "الواقعة", 57: "الحديد", 58: "المجادلة", 59: "الحشر", 60: "الممتحنة",
+      61: "الصف", 62: "الجمعة", 63: "المنافقون", 64: "التغابن", 65: "الطلاق", 66: "التحريم",
+      67: "الملك", 68: "القلم", 69: "الحاقة", 70: "المعارج", 71: "نوح", 72: "الجن",
+      73: "المزمل", 74: "المدثر", 75: "القيامة", 76: "الإنسان", 77: "المرسلات", 78: "النبأ",
+      79: "النازعات", 80: "عبس", 81: "التكوير", 82: "الانفطار", 83: "المطففين", 84: "الانشقاق",
+      85: "البروج", 86: "الطارق", 87: "الأعلى", 88: "الغاشية", 89: "الفجر", 90: "البلد",
+      91: "الشمس", 92: "الليل", 93: "الضحى", 94: "الشرح", 95: "التين", 96: "العلق",
+      97: "القدر", 98: "البينة", 99: "الزلزلة", 100: "العاديات", 101: "القارعة", 102: "التكاثر",
+      103: "العصر", 104: "الهمزة", 105: "الفيل", 106: "قريش", 107: "الماعون", 108: "الكوثر",
+      109: "الكافرون", 110: "النصر", 111: "المسد", 112: "الإخلاص", 113: "الفلق", 114: "الناس"
+    };
+
+    const levelTranslations = {
+      'major_topic': 'باب رئيسي',
+      'section': 'قسم',
+      'topic': 'موضوع رئيسي',
+      'subtopic': 'موضوع فرعي'
+    };
+
+    async function loadData() {
+      try {
+        const response = await fetch('data/quran_topics.json');
+        const data = await response.json();
+        allTopics = data.topics || [];
+        renderTopics(allTopics);
+      } catch (err) {
+        console.warn('Could not load data/quran_topics.json directly. Showing fallback instructions.', err);
+        document.getElementById('topicsContainer').innerHTML = `
+          <div style="text-align: center; padding: 2rem;">
+            <p style="font-weight: 700; color: #b91c1c;">تنبيه: لتصفح كافة الموضوعات (١٢٩٢ موضوعاً)، يرجى تشغيل خادم محلي أو فتح الصفحة عبر GitHub Pages.</p>
+            <p style="margin-top: 0.5rem;">يمكنك مطالعة الفهرس الكامل مباشرة عبر ملف: <a href="quran_topics_index.md" style="color: var(--primary);">quran_topics_index.md</a></p>
+          </div>
+        `;
+      }
+    }
+
+    function renderTopics(topics) {
+      const container = document.getElementById('topicsContainer');
+      const countEl = document.getElementById('resultsCount');
+
+      countEl.innerText = `يُعرض ${topics.length} من أصل ${allTopics.length} موضوعاً`;
+
+      if (topics.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 3rem; color: var(--text-muted); font-weight: 700;">لا توجد نتائج تطابق بحثك</div>';
+        return;
+      }
+
+      // Limit initial rendering to first 150 items for high UI responsiveness
+      const displayItems = topics.slice(0, 150);
+
+      container.innerHTML = displayItems.map(item => {
+        let levelClass = 'topic-level-subtopic';
+        if (item.level === 'major_topic') levelClass = 'topic-level-major';
+        if (item.level === 'section') levelClass = 'topic-level-section';
+
+        const refsHtml = (item.references || []).map(ref => {
+          const sName = surahNames[ref.surah_number] || '';
+          const ayahsText = ref.ayahs.map(a => Array.isArray(a) ? `${a[0]}-${a[1]}` : a).join('، ');
+          return `
+            <div class="ref-badge">
+              <span class="ref-surah">${ref.surah_number} (${sName}):</span>
+              <span class="ref-ayahs">${ayahsText}</span>
+            </div>
+          `;
+        }).join('');
+
+        const colText = item.column === 'right' ? 'العمود الأيمن' : 'العمود الأيسر';
+
+        return `
+          <div class="topic-card">
+            <div class="topic-header">
+              <div class="topic-title">${item.title}</div>
+              <span class="topic-level-badge ${levelClass}">${levelTranslations[item.level] || item.level}</span>
+            </div>
+            ${refsHtml ? `<div class="references-container">${refsHtml}</div>` : ''}
+            <span class="page-tag">الصفحة: ${item.page_number} &bull; ${colText}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Search and Filter Handlers
+    function applyFilters() {
+      const query = document.getElementById('topicSearch').value.trim().toLowerCase();
+
+      let filtered = allTopics.filter(t => {
+        // Level filter
+        if (currentFilter !== 'all' && t.level !== currentFilter) {
+          return false;
+        }
+
+        // Query filter
+        if (!query) return true;
+
+        // Check title
+        if (t.title.toLowerCase().includes(query)) return true;
+
+        // Check surah number or name
+        if (t.references) {
+          return t.references.some(r => {
+            if (r.surah_number.toString() === query) return true;
+            const name = surahNames[r.surah_number] || '';
+            if (name.includes(query)) return true;
+            return false;
+          });
+        }
+        return false;
+      });
+
+      renderTopics(filtered);
+    }
+
+    document.getElementById('topicSearch').addEventListener('input', applyFilters);
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        applyFilters();
+      });
+    });
+
+    loadData();
+  </script>
+</body>
+</html>
