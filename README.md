@@ -1,7 +1,7 @@
 # QuranTopicsGDB (فهرس مواضيع القرآن الكريم)
 
 [![Marqoom Standards Compliant](https://img.shields.io/badge/Marqoom-Compliant-0d9488.svg)](https://github.com/marqoom-specs/quranic-terminology-lint)
-[![Release](https://img.shields.io/badge/Release-v1.0.4-16a34a.svg)](https://github.com/mohamed-soubhi/QuranTopicsGDB/releases/tag/v1.0.4)
+[![Release](https://img.shields.io/badge/Release-v1.0.6-16a34a.svg)](https://github.com/mohamed-soubhi/QuranTopicsGDB/releases/tag/v1.0.6)
 [![Coverage](https://img.shields.io/badge/Surahs-114%2F114-blue.svg)](#metrics)
 
 Extraction, structured formatting, multi-model comparative audit, and canonical verification of the comprehensive Quranic Subject Index (*فهرس مواضيع القرآن الكريم*), covering 114 Surahs and 6,236 Ayahs.
@@ -10,9 +10,9 @@ Extraction, structured formatting, multi-model comparative audit, and canonical 
 
 ---
 
-## Release v1.0.4 Highlights
+## Release v1.0.6 Highlights
 
-- **Instant On-Demand Ayah Popovers (0ms Latency, Offline-Ready):** Hovering over or clicking any Ayah citation or range across all 48 pages pops up the full canonical Quranic text in RasmUthmani with Surah names and ayah numbering. Powered by local lazy-loaded JSON (`data/quran_text_hafs.json`) without any page weight overhead.
+- **Instant On-Demand Ayah Popovers (0ms Latency, Offline-Ready):** Enabled across **both the Book-View Reader and the Interactive Subject Explorer**. Hovering over or clicking any Ayah citation or range pops up the full canonical Quranic text in RasmUthmani with Surah names and ayah numbering. Powered by local lazy-loaded JSON (`data/quran_text_hafs.json`) without any page weight overhead.
 - **Full Bilingual Support:** Every page has a dedicated English and Arabic version with instant reciprocal switching:
   - Web Portal: [`index.html`](index.html) (AR) & [`index_en.html`](index_en.html) (EN).
   - Book Replica Reader: [`book.html`](book.html) (AR) & [`book_en.html`](book_en.html) (EN).
